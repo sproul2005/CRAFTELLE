@@ -69,7 +69,7 @@ const Navbar = () => {
 
     return (
         <nav style={{
-            padding: '1.5rem 0',
+            padding: '1.0rem 0',
             position: 'sticky',
             top: 0,
             backgroundColor: 'rgba(255,255,255,0.95)',

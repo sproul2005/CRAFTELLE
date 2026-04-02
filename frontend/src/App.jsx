@@ -23,10 +23,12 @@ import { WishlistProvider } from './context/WishlistContext';
 import Navbar from './components/Navbar';
 
 import Footer from './components/Footer';
+import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 function App() {
   const location = useLocation();
   const showFooter = location.pathname === '/' || location.pathname === '/shop';
+  const isAdminPage = location.pathname.startsWith('/admin');
 
   return (
     <AuthProvider>
@@ -59,6 +61,7 @@ function App() {
               </Routes>
             </div>
             {showFooter && <Footer />}
+            {!isAdminPage && <FloatingWhatsApp />}
           </div>
         </WishlistProvider>
       </CartProvider>

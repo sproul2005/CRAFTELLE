@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema({
     description: {
         type: String,
         required: [true, 'Please add a description'],
-        maxlength: [500, 'Description can not be more than 500 characters']
+        maxlength: [1000, 'Description can not be more than 1000 characters']
     },
     price: {
         type: Number,
@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         required: [true, 'Please add a category'],
-        enum: ['Resin Art', 'Portrait', 'String Art', 'Mandala Art', 'Candles', 'Rakhi', 'Other']
+        enum: ['Anniversary', 'Marriage', 'Marriage Gift', 'Birthday', 'Baby Details', 'Custom Gift', 'Gifts', 'Nameplate', 'Clock', 'Bangles', 'Resin Art', 'String Art', 'Mandala Art', 'Portrait', 'Candles', 'Rakhi', 'Other']
     },
     images: [{
         public_id: {

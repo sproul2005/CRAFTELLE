@@ -1,5 +1,5 @@
 const errorHandler = (err, req, res, next) => {
-    console.log(err.stack);
+    console.error("Error Object:", err);
 
     let error = { ...err };
     error.message = err.message;

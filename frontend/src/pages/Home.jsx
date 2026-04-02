@@ -15,18 +15,17 @@ const Home = () => {
         const urlCategory = searchParams.get('category');
         return urlCategory ? urlCategory : 'featured';
     });
-    
-    const [availableCategories, setAvailableCategories] = useState([]);
+
     const { addToCart } = useCart();
     const { addToWishlist: addProductToWishlist } = useWishlist();
     const { isAdmin } = useAuth();
     const navigate = useNavigate();
-    
+
     // Sync URL category changes
     useEffect(() => {
         const urlCategory = searchParams.get('category') || 'featured';
         if (urlCategory !== category) {
-             setCategory(urlCategory);
+            setCategory(urlCategory);
         }
     }, [searchParams]);
 
@@ -54,7 +53,7 @@ const Home = () => {
         });
     };
 
-    
+
     const location = useLocation();
 
     React.useEffect(() => {
@@ -63,19 +62,20 @@ const Home = () => {
             if (element) {
                 setTimeout(() => {
                     element.scrollIntoView({ behavior: 'smooth' });
-                }, 100); 
+                }, 100);
             }
         }
     }, [location]);
 
-    
-    const allowedCategories = ['Resin Art', 'String Art', 'Mandala Art', 'Portrait', 'Candles', 'Rakhi'];
 
-    
+    const allowedCategories = ['Anniversary', 'Marriage', 'Birthday', 'Baby Details', 'Gifts', 'Nameplate', 'Clock', 'Bangles', 'Resin Art', 'String Art', 'Candles', 'Rakhi'];
+
+    const [availableCategories, setAvailableCategories] = useState([]);
+
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const { data } = await api.get('/products');
+                const { data } = await api.get('/products?limit=1000');
                 const allProducts = data.products || [];
                 const existingCategories = [...new Set(allProducts.map(p => p.category))];
                 const filtered = allowedCategories.filter(c => existingCategories.includes(c));
@@ -87,18 +87,16 @@ const Home = () => {
         fetchCategories();
     }, []);
 
-      useEffect(() => {
+    useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-
-                let query = '/products?limit=8';
+                let query = '/products?limit=100';
                 if (category === 'featured') {
                     query = '/products?trending=true&limit=8';
                 } else if (category) {
-                    query += `&category=${category}`;
+                    query = `/products?category=${category}&limit=100`;
                 }
-
 
                 const { data } = await api.get(query);
                 setProducts(data.products || []);
@@ -113,22 +111,20 @@ const Home = () => {
 
     return (
         <div style={{ overflowX: 'hidden' }}>
-            {}
+            { }
             <div style={{
                 position: 'relative',
-                height: '85vh', 
+                height: '95vh',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 textAlign: 'center',
                 color: 'white',
-                marginBottom: '0rem', 
+                marginBottom: '0rem',
                 overflow: 'hidden',
-                borderRadius: '0 0 50px 50px', 
-                boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-                marginTop: '-2rem' 
+                marginTop: '-2rem'
             }}>
-                {}
+                { }
                 <motion.div
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -138,13 +134,12 @@ const Home = () => {
                         left: 0,
                         width: '100%',
                         height: '100%',
-                        backgroundImage: 'url("https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=3432&auto=format&fit=crop")', 
+                        backgroundImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.75)), url("https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=3432&auto=format&fit=crop")',
                         backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        filter: 'brightness(0.35)' 
+                        backgroundPosition: 'center'
                     }}></motion.div>
 
-                {}
+                { }
                 <div style={{ position: 'relative', zIndex: 1, padding: '0 1rem', maxWidth: '900px' }}>
                     <motion.h4
                         initial={{ opacity: 0, y: 20 }}
@@ -158,7 +153,7 @@ const Home = () => {
                             color: '#e0e0e0'
                         }}
                     >
-                        Handcrafted Excellence
+                        The Art of Thoughtful Gifting
                     </motion.h4>
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
@@ -172,8 +167,8 @@ const Home = () => {
                             fontWeight: 400
                         }}
                     >
-                        Make Your Interior More <br />
-                        <span style={{ fontStyle: 'italic', fontWeight: 600 }}>Artistic & Soulful</span>
+                        Turn Your Memories Into <br />
+                        <span style={{ fontWeight: 600 }}>Timeless Treasures</span>
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
@@ -183,22 +178,22 @@ const Home = () => {
                             fontSize: '1.1rem',
                             maxWidth: '600px',
                             margin: '0 auto 2.5rem',
-                            color: '#ddd',
+                            color: '#eee',
                             lineHeight: '1.6'
                         }}
                     >
-                        Turn your room into a sanctuary with our unique handcrafted masterpieces.
-                        Modern elegance meets traditional craftsmanship.
+                        Celebrate life’s special moments with personalized, handcrafted creations that tell your unique story and turn memories into something truly meaningful.
                     </motion.p>
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8 }}
+                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}
                     >
                         <button
                             onClick={() => document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' })}
-                            className="btn-primary" 
+                            className="btn-primary"
                             style={{
                                 padding: '15px 40px',
                                 borderRadius: '30px',
@@ -211,10 +206,13 @@ const Home = () => {
                             Explore Collection
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </button>
+                        <span style={{ fontSize: '0.9rem', color: '#e0e0e0', opacity: 0.9, letterSpacing: '0.5px' }}>
+                            Handcrafted with ❤️ | Unique & Personalized
+                        </span>
                     </motion.div>
                 </div>
 
-                {}
+                { }
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -231,15 +229,15 @@ const Home = () => {
                 </motion.div>
             </div>
 
-            <div id="products-section" className="container" style={{ padding: '2rem 1.5rem', minHeight: '600px' }}>
+            <div id="products-section" className="container" style={{ padding: '0.5rem 1.5rem', minHeight: '600px' }}>
 
-                {}
-                <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-heading)' }}>Curated For You</h2>
+                { }
+                <div style={{ marginBottom: '0', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+                    <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-heading)', marginTop: '0.5rem', marginBottom: '0.5rem' }}>Curated For You</h2>
                 </div>
 
-                {}
-                <div className="category-bubbles" style={{ margin: '-1rem -1.5rem 2rem', padding: '1rem 1.5rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch', textAlign: 'center' }}>
+                { }
+                <div className="category-bubbles" style={{ margin: '0 -1.5rem 1.5rem', padding: '0.5rem 1.5rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch', textAlign: 'center' }}>
                     <div style={{ display: 'inline-flex', gap: '2.5rem', margin: '0 auto', padding: '0 1rem' }}>
                         <div
                             onClick={() => handleCategoryClick('featured')}
@@ -276,7 +274,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                {}
+                { }
                 {loading ? (
                     <div style={{ textAlign: 'center', padding: '4rem' }}>Loading masterpieces...</div>
                 ) : (
@@ -313,7 +311,7 @@ const Home = () => {
                                     ) : (
                                         <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f9f9f9', color: '#ccc' }}>No Image</div>
                                     )}
-                                    {}
+                                    { }
                                     <div style={{
                                         position: 'absolute',
                                         bottom: '10px',
@@ -339,7 +337,7 @@ const Home = () => {
                                         </Link>
                                     </h3>
 
-                                    {}
+                                    { }
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.2rem' }}>
                                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.8rem' }}>
                                             <span className="product-price-old">₹{Math.round(product.price * 1.25)}</span>
@@ -378,7 +376,7 @@ const Home = () => {
 
 
 
-                {}
+                { }
                 <div id="how-we-work" className="section" style={{ padding: 'clamp(2rem, 5vw, 4rem) 1rem', backgroundColor: '#fcfaf8', position: 'relative', overflow: 'hidden' }}>
                     <div style={{ textAlign: 'center', marginBottom: 'clamp(1rem, 4vw, 2rem)', marginTop: 'clamp(0.5rem, 2vw, 1rem)' }}>
                         <motion.span
@@ -410,12 +408,12 @@ const Home = () => {
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
                             style={{ color: '#666', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto', lineHeight: '1.6' }}>
-                            From your creative vision to your doorstep, we make the journey of acquiring art seamless and magical.
+                            From your heartfelt intention to their doorstep, we make the journey of gifting seamless, personal, and magical.
                         </motion.p>
                     </div>
 
                     <div style={{ maxWidth: '1100px', margin: '0 auto', position: 'relative' }}>
-                        {}
+                        { }
                         <div className="process-line"></div>
 
                         <div className="process-grid" style={{
@@ -425,10 +423,10 @@ const Home = () => {
                             zIndex: 1
                         }}>
                             {[
-                                { id: '01', title: 'Choose', desc: 'Browse our exclusive collection to find the perfect piece.', icon: <Package strokeWidth={1.5} size={28} /> },
-                                { id: '02', title: 'Customize', desc: 'Share your personal preferences, details, and vision.', icon: <Settings strokeWidth={1.5} size={28} /> },
-                                { id: '03', title: 'Create', desc: 'We carefully handcraft your masterpiece with love.', icon: <PenTool strokeWidth={1.5} size={28} /> },
-                                { id: '04', title: 'Deliver', desc: 'Fast, secure, and pristine delivery to your doorstep.', icon: <CheckCircle strokeWidth={1.5} size={28} /> }
+                                { id: '01', title: 'Choose', desc: 'Browse our exclusive collection to find the perfect heartfelt gift.', icon: <Package strokeWidth={1.5} size={28} /> },
+                                { id: '02', title: 'Customize', desc: 'Share your personal preferences to make it truly yours.', icon: <Settings strokeWidth={1.5} size={28} /> },
+                                { id: '03', title: 'Create', desc: 'We carefully handcraft your personalized gift with love.', icon: <PenTool strokeWidth={1.5} size={28} /> },
+                                { id: '04', title: 'Deliver', desc: 'Fast, beautiful, and pristine delivery straight to their doorstep.', icon: <CheckCircle strokeWidth={1.5} size={28} /> }
                             ].map((step, index) => (
                                 <motion.div
                                     key={step.id}
@@ -478,7 +476,7 @@ const Home = () => {
 
 
 
-                {}
+                { }
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -489,12 +487,12 @@ const Home = () => {
                     <h2 style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)', fontFamily: 'var(--font-heading)' }}>Our Story</h2>
                     <div style={{ maxWidth: '800px', margin: '0 auto', lineHeight: '1.8', fontSize: 'clamp(1rem, 2vw, 1.1rem)', color: '#444' }}>
                         <p style={{ marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}>
-                            Welcome to <strong>Hasthkala</strong>, where tradition meets contemporary elegance.
-                            Born from a passion for handcrafted artistry, we curate a collection of unique, soulful items that tell a story.
+                            Welcome to <strong>Hasthkala</strong>, where the joy of gifting meets contemporary elegance.
+                            Born from a passion for bringing smiles to people's faces, we curate a collection of personalized, soulful gifts that tell a beautiful story.
                         </p>
                         <p style={{ marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}>
-                            Our artisans pour their heart into every creation—from intricate Resin Art to delicate String Art and personalized portraits.
-                            We believe that every home deserves a touch of warmth and every gift should carry a piece of your heart.
+                            Our artisans pour their heart into every creation—from personalized Resin Clocks to delicate String Art and customized Engagement Platters.
+                            We believe that every occasion deserves to be celebrated, and every handcrafted piece should carry a piece of your heart.
                         </p>
                         <p>
                             Thank you for supporting handmade. Thank you for choosing quality, authenticity, and love.
@@ -505,7 +503,7 @@ const Home = () => {
                     </div>
                 </motion.div>
 
-                {}
+                { }
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -519,10 +517,10 @@ const Home = () => {
                         padding: 'clamp(1rem, 3vw, 1.5rem)',
                         borderRadius: '8px',
                         maxWidth: '1200px',
-                        margin: '0 auto'  
+                        margin: '0 auto'
                     }}
                 >
-                    {}
+                    { }
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -537,7 +535,7 @@ const Home = () => {
                         <p style={{ fontSize: '0.8rem', color: '#888' }}>7-12 Days Delivery</p>
                     </motion.div>
 
-                    {}
+                    { }
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -552,7 +550,7 @@ const Home = () => {
                         <p style={{ fontSize: '0.8rem', color: '#888' }}>Handcrafted Excellence</p>
                     </motion.div>
 
-                    {}
+                    { }
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -567,7 +565,7 @@ const Home = () => {
                         <p style={{ fontSize: '0.8rem', color: '#888' }}>100% Secure Checkout</p>
                     </motion.div>
 
-                    {}
+                    { }
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -734,44 +732,7 @@ const Home = () => {
             `}</style>
             </div>
 
-            {}
-            {!isAdmin && (
-                <motion.div
-                    initial={{ y: 100, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 2 }}
-                    style={{
-                        position: 'fixed',
-                        bottom: '30px',
-                        right: '30px',
-                        zIndex: 1000,
-                    }}
-                >
-                    <button
-                        onClick={() => document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' })}
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            backgroundColor: 'rgba(255, 255, 255, 0.85)',
-                            backdropFilter: 'blur(10px)',
-                            padding: '12px 24px',
-                            borderRadius: '50px',
-                            boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-                            border: '1px solid rgba(255,255,255,0.4)',
-                            color: 'var(--color-primary)',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            transition: 'transform 0.3s'
-                        }}
-                        onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                        onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                    >
-                        <MessageCircle size={20} />
-                        ✨ Custom Order
-                    </button>
-                </motion.div>
-            )}
+            { }
         </div>
     );
 };

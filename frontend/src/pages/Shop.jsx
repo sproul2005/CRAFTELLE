@@ -26,19 +26,20 @@ const Shop = () => {
         });
     };
 
-    
-    const [availableCategories, setAvailableCategories] = useState([]);
-    const allowedCategories = ['Resin Art', 'String Art', 'Mandala Art', 'Portrait', 'Candles', 'Rakhi'];
 
-    
+
+    const [availableCategories, setAvailableCategories] = useState([]);
+
+    const allowedCategories = ['Anniversary', 'Marriage', 'Birthday', 'Baby Details', 'Gifts', 'Nameplate', 'Clock', 'Bangles', 'Resin Art', 'String Art', 'Candles', 'Rakhi'];
+
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const { data } = await api.get('/products');
+                const { data } = await api.get('/products?limit=1000');
                 const allProducts = data.products || [];
-                
+
                 const existingCategories = [...new Set(allProducts.map(p => p.category))];
-                
+
                 const filtered = allowedCategories.filter(c => existingCategories.includes(c));
                 setAvailableCategories(filtered);
             } catch (error) {
@@ -48,7 +49,7 @@ const Shop = () => {
         fetchCategories();
     }, []);
 
-    
+
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true);
@@ -171,7 +172,7 @@ const Shop = () => {
             <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                 <h1 style={{ fontSize: '2.5rem' }}>Collection</h1>
 
-                {}
+                { }
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                     <div style={{ position: 'relative' }}>
                         <select
@@ -229,7 +230,7 @@ const Shop = () => {
                                 ) : (
                                     <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f9f9f9', color: '#ccc' }}>No Image</div>
                                 )}
-                                {}
+                                { }
                                 <div style={{
                                     position: 'absolute',
                                     bottom: '10px',
