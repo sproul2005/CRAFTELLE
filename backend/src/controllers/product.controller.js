@@ -43,18 +43,10 @@ exports.createProduct = async (req, res, next) => {
                     folder: 'hasthkala/products'
                 });
                 if (result?.public_id && result?.secure_url) {
-                if (result?.public_id && result?.secure_url) {
-                if (result?.public_id && result?.secure_url) {
                     imagesLinks.push({
                         public_id: result.public_id,
                         url: result.secure_url,
                     });
-                } else {
-                    console.warn(`Cloudinary upload failed: no public_id/url`, result);
-                }
-                } else {
-                    console.warn(`Cloudinary upload failed: no public_id/url`, result);
-                }
                 } else {
                     console.warn(`Cloudinary upload failed for file ${i + 1}: result incomplete`, result);
                 }
@@ -256,7 +248,7 @@ exports.deleteProduct = async (req, res, next) => {
             });
         }
 
-        await product.remove();
+        await product.deleteOne();
 
         res.status(200).json({
             success: true,

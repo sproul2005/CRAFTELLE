@@ -12,12 +12,37 @@ const RelatedProducts = ({ currentProductId }) => {
     useEffect(() => {
         const fetchRelatedProducts = async () => {
             try {
-                
-                
-                const response = await api.get('/products');
+                const response = await api.get('/products?limit=1000');
                 const allProducts = response.data.products || [];
-                const related = allProducts.filter(p => p._id !== currentProductId).slice(0, 8);
-                setProducts(related);
+                
+                const filteredProducts = allProducts.filter(p => p._id !== currentProductId);
+
+                const grouped = {};
+                filteredProducts.forEach(p => {
+                    const cat = p.category || 'Other';
+                    if (!grouped[cat]) grouped[cat] = [];
+                    grouped[cat].push(p);
+                });
+
+                Object.keys(grouped).forEach(cat => {
+                    grouped[cat].sort(() => 0.5 - Math.random());
+                });
+
+                const interleaved = [];
+                let added = true;
+                const categoryKeys = Object.keys(grouped).sort(() => 0.5 - Math.random());
+                
+                while (added) {
+                    added = false;
+                    for (const cat of categoryKeys) {
+                        if (grouped[cat].length > 0) {
+                            interleaved.push(grouped[cat].shift());
+                            added = true;
+                        }
+                    }
+                }
+
+                setProducts(interleaved);
             } catch (error) {
                 console.error("Failed to fetch related products", error);
             } finally {

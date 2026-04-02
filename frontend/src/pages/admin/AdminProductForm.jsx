@@ -4,7 +4,7 @@ import api from '../../services/api';
 import { ChevronLeft, Plus, Trash2 } from 'lucide-react';
 
 const AdminProductForm = () => {
-    const categories = ['Resin Art', 'String Art', 'Mandala Art', 'Portrait', 'Candles', 'Rakhi'];
+    const categories = ['Anniversary', 'Marriage', 'Birthday', 'Baby Details', 'Gifts', 'Nameplate', 'Clock', 'Bangles', 'Resin Art', 'String Art', 'Candles', 'Rakhi'];
     const { id } = useParams();
     const navigate = useNavigate();
     const isEditMode = !!id;
@@ -19,8 +19,8 @@ const AdminProductForm = () => {
         isTrending: false,
         images: [],
     });
-    const [sizes, setSizes] = useState([{ label: 'Small', price: 0, stock: 0 }]); 
-    const [files, setFiles] = useState([]); 
+    const [sizes, setSizes] = useState([{ label: '8"Inch', price: 0, stock: 0 }]);
+    const [files, setFiles] = useState([]);
     const [existingImages, setExistingImages] = useState([]);
 
     useEffect(() => {
@@ -88,11 +88,11 @@ const AdminProductForm = () => {
         data.append('customizationType', formData.customizationType);
         data.append('isTrending', formData.isTrending);
         data.append('sizes', JSON.stringify(sizes));
-        
+
         // Append existing images that the user wants to KEEP
         data.append('existingImages', JSON.stringify(existingImages));
 
-        
+
         files.forEach(file => {
             data.append('images', file);
         });
@@ -150,29 +150,13 @@ const AdminProductForm = () => {
                     <div>
                         <label style={{ display: 'block', marginBottom: '0.5rem' }}>Category</label>
                         <select
-                            value={categories.includes(formData.category) ? formData.category : 'Other'}
-                            onChange={(e) => {
-                                if (e.target.value === 'Other') {
-                                    setFormData({ ...formData, category: '' });
-                                } else {
-                                    setFormData({ ...formData, category: e.target.value });
-                                }
-                            }}
+                            value={formData.category}
+                            name="category"
+                            onChange={handleChange}
                             style={{ width: '100%', padding: '10px', border: '1px solid #ddd' }}
                         >
                             {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                            <option value="Other">Other (Custom)</option>
                         </select>
-                        {(!categories.includes(formData.category) || formData.category === '') && (
-                            <input
-                                type="text"
-                                name="category"
-                                placeholder="Enter custom category"
-                                value={formData.category}
-                                onChange={handleChange}
-                                style={{ marginTop: '0.5rem', width: '100%', padding: '10px', border: '1px solid #ddd' }}
-                            />
-                        )}
                     </div>
                     <div>
                         <label style={{ display: 'block', marginBottom: '0.5rem' }}>Customization Type</label>
@@ -185,9 +169,9 @@ const AdminProductForm = () => {
                     </div>
                     <div>
                         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', fontWeight: 500 }}>
-                            <input 
-                                type="checkbox" 
-                                name="isTrending" 
+                            <input
+                                type="checkbox"
+                                name="isTrending"
                                 checked={formData.isTrending || false}
                                 onChange={(e) => setFormData({ ...formData, isTrending: e.target.checked })}
                                 style={{ width: '18px', height: '18px' }}
@@ -197,7 +181,7 @@ const AdminProductForm = () => {
                     </div>
                 </div>
 
-                {}
+                { }
                 <div style={{ marginTop: '2rem', padding: '1rem', border: '1px solid #eee' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                         <label style={{ fontWeight: 600 }}>Sizes & Stock</label>
@@ -206,7 +190,7 @@ const AdminProductForm = () => {
 
                     {sizes.map((size, idx) => (
                         <div key={idx} style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '0.5rem' }}>
-                            <input type="text" placeholder="Label (e.g. Small)" value={size.label} onChange={(e) => handleSizeChange(idx, 'label', e.target.value)} style={{ flex: 2, padding: '8px' }} />
+                            <input type="text" placeholder='Label (e.g. 8"Inch)' value={size.label} onChange={(e) => handleSizeChange(idx, 'label', e.target.value)} style={{ flex: 2, padding: '8px' }} />
                             <input type="number" placeholder="Price Override" value={size.price} onChange={(e) => handleSizeChange(idx, 'price', e.target.value)} style={{ flex: 1, padding: '8px' }} />
                             <input type="number" placeholder="Stock" value={size.stock} onChange={(e) => handleSizeChange(idx, 'stock', e.target.value)} style={{ flex: 1, padding: '8px' }} />
                             <button type="button" onClick={() => removeSize(idx)} style={{ border: 'none', background: 'none', color: 'red' }}><Trash2 size={16} /></button>
@@ -214,7 +198,7 @@ const AdminProductForm = () => {
                     ))}
                 </div>
 
-                {}
+                { }
                 <div style={{ marginTop: '2rem' }}>
                     <label style={{ display: 'block', marginBottom: '0.5rem' }}>Product Images</label>
                     <input type="file" multiple onChange={handleFileChange} accept="image/*" />
@@ -227,13 +211,13 @@ const AdminProductForm = () => {
                                 {existingImages.map(img => (
                                     <div key={img.public_id} style={{ position: 'relative' }}>
                                         <img src={img.url} alt="" referrerPolicy="no-referrer" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '4px', border: '1px solid #ddd' }} />
-                                        <button 
-                                            type="button" 
+                                        <button
+                                            type="button"
                                             onClick={() => handleRemoveExistingImage(img.public_id)}
                                             style={{
                                                 position: 'absolute', top: '-5px', right: '-5px',
-                                                background: 'red', color: 'white', border: 'none', 
-                                                borderRadius: '50%', width: '20px', height: '20px', 
+                                                background: 'red', color: 'white', border: 'none',
+                                                borderRadius: '50%', width: '20px', height: '20px',
                                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                 cursor: 'pointer', fontSize: '12px'
                                             }}

@@ -66,7 +66,7 @@ const Footer = () => {
                         </div>
                         <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', color: '#aaa' }}>
                             <Phone size={18} />
-                            <span style={{ fontSize: '0.95rem' }}>+91 90784 06035</span>
+                            <span style={{ fontSize: '0.95rem' }}>+91 7438855060</span>
                         </div>
                         <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'start', color: '#aaa' }}>
                             <MapPin size={18} style={{ marginTop: '3px' }} />

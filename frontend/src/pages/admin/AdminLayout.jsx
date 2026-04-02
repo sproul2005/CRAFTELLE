@@ -20,10 +20,10 @@ const AdminLayout = () => {
     ];
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh' }}>
-            {}
-            <aside style={{ width: '250px', backgroundColor: 'var(--color-primary)', color: 'white', padding: '2rem' }}>
-                <h2 style={{ fontSize: '1.5rem', marginBottom: '3rem', fontFamily: 'var(--font-heading)' }}>Admin Panel</h2>
+        <div style={{ display: 'flex', height: 'calc(100vh - 75px)', overflow: 'hidden' }}>
+            {/* Sidebar */}
+            <aside style={{ width: '250px', backgroundColor: 'var(--color-primary)', color: 'white', padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
+                <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', fontFamily: 'var(--font-heading)' }}>Admin Panel</h2>
 
                 <nav style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {navItems.map(item => (
@@ -53,7 +53,7 @@ const AdminLayout = () => {
                             alignItems: 'center',
                             gap: '1rem',
                             padding: '10px 15px',
-                            marginTop: 'auto',
+                            marginTop: '1rem',
                             background: 'none',
                             border: 'none',
                             color: '#aaa',
