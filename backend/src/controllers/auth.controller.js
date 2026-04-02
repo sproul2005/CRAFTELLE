@@ -81,8 +81,46 @@ exports.getMe = async (req, res, next) => {
 };
 
 
-const sendTokenResponse = (user, statusCode, res) => {
+exports.updateDetails = async (req, res, next) => {
+    try {
+        const fieldsToUpdate = {
+            name: req.body.name,
+            email: req.body.email
+        };
 
+        const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+            new: true,
+            runValidators: true
+        });
+
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.updatePassword = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user.id).select('+password');
+
+        if (!(await user.matchPassword(req.body.currentPassword))) {
+            return res.status(401).json({ success: false, error: 'Current password is incorrect' });
+        }
+
+        user.password = req.body.newPassword;
+        await user.save();
+
+        sendTokenResponse(user, 200, res);
+    } catch (err) {
+        next(err);
+    }
+};
+
+
+const sendTokenResponse = (user, statusCode, res) => {
     const token = user.getSignedJwtToken();
 
     const options = {
