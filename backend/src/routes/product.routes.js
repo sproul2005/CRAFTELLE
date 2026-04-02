@@ -1,4 +1,6 @@
 const express = require('express');
+const apicache = require('apicache');
+const cache = apicache.middleware;
 const router = express.Router();
 const {
     getProducts,
@@ -13,11 +15,11 @@ const upload = require('../middleware/upload.middleware');
 const { protect, authorize } = require('../middleware/auth.middleware');
 
 router.route('/')
-    .get(getProducts)
+    .get(cache('5 minutes'), getProducts)
     .post(protect, authorize('admin'), upload.array('images', 5), createProduct);
 
 router.route('/:id')
-    .get(getProduct)
+    .get(cache('5 minutes'), getProduct)
     .put(protect, authorize('admin'), upload.array('images', 5), updateProduct)
     .delete(protect, authorize('admin'), deleteProduct);
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import api from '../services/api';
@@ -109,8 +110,19 @@ const Home = () => {
         fetchProducts();
     }, [category]);
 
+    const getOptimizedUrl = (url) => {
+        if (!url || !url.includes('cloudinary')) return url;
+        return url.replace('/upload/', '/upload/f_auto,q_auto,w_500/');
+    };
+
     return (
         <div style={{ overflowX: 'hidden' }}>
+            <Helmet>
+                <title>Hasthkala | The Art of Thoughtful Gifting</title>
+                <meta name="description" content="Celebrate life's special moments with personalized, handcrafted creations like Resin Art, Clocks, Nameplates, and custom keepsakes that turn memories into timeless treasures." />
+                <meta property="og:title" content="Hasthkala | Handmade & Personalized Gifts" />
+                <meta property="og:description" content="Turn Your Memories Into Timeless Treasures. Premium personalized and handmade gifts." />
+            </Helmet>
             { }
             <div style={{
                 position: 'relative',

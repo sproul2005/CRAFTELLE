@@ -66,4 +66,10 @@ const productSchema = new mongoose.Schema({
     }
 });
 
+// Optimize queries
+productSchema.index({ category: 1 });
+productSchema.index({ price: 1 });
+productSchema.index({ isTrending: 1 });
+productSchema.index({ createdAt: -1 });
+
 module.exports = mongoose.model('Product', productSchema);
