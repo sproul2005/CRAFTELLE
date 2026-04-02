@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const compression = require('compression');
 const connectDB = require('./src/config/db');
 const errorHandler = require('./src/middleware/error.middleware');
 
@@ -20,6 +21,11 @@ connectDB();
 
 const app = express();
 
+// Compress HTTP responses
+app.use(compression({
+    level: 6,
+    threshold: 10 * 1024 // 10KB
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -54,7 +60,7 @@ const server = app.listen(PORT, () => {
 
 process.on('unhandledRejection', (err, promise) => {
     console.log(`Error: ${err.message}`);
-    
+
     server.close(() => process.exit(1));
 });
 

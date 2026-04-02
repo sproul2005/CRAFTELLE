@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
 import { motion } from 'framer-motion';
 import { ShoppingBag, ChevronLeft, Upload, Star, Share2, Heart, Truck, ShieldCheck, Eye } from 'lucide-react';
@@ -123,8 +124,42 @@ const ProductDetails = () => {
 
     const activeSizePrice = product.sizes.find(s => s.label === selectedSize)?.price || product.price;
 
+    const getOptimizedUrl = (url) => {
+        if (!url || !url.includes('cloudinary')) return url;
+        return url.replace('/upload/', '/upload/f_auto,q_auto,w_800/');
+    };
+
+    const schemaData = {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": product.name,
+        "image": product.images[0]?.url,
+        "description": product.description,
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": product.averageRating || 5,
+            "reviewCount": reviews.length || 1
+        },
+        "offers": {
+            "@type": "Offer",
+            "priceCurrency": "INR",
+            "price": activeSizePrice,
+            "availability": "https://schema.org/InStock"
+        }
+    };
+
     return (
         <div>
+            <Helmet>
+                <title>{product.name} | Hasthkala Handmade</title>
+                <meta name="description" content={product.description.substring(0, 150)} />
+                <meta property="og:title" content={product.name} />
+                <meta property="og:image" content={product.images[0]?.url} />
+                <meta name="twitter:card" content="summary_large_image" />
+                <script type="application/ld+json">
+                    {JSON.stringify(schemaData)}
+                </script>
+            </Helmet>
             <div className="container" style={{ padding: 'clamp(1rem, 4vw, 3rem) 1rem 0 1rem' }}>
                 <button 
                     onClick={() => {
@@ -147,9 +182,10 @@ const ProductDetails = () => {
                             <div style={{ width: '100%', aspectRatio: '1/1', backgroundColor: 'var(--color-surface)', borderRadius: '8px', overflow: 'hidden' }}>
                                 {product.images.length > 0 ? (
                                     <img
-                                        src={product.images[currentImageIndex].url}
+                                        src={getOptimizedUrl(product.images[currentImageIndex].url)}
                                         alt={`${product.name} main`}
                                         referrerPolicy="no-referrer"
+                                        fetchpriority="high"
                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                     />
                                 ) : (

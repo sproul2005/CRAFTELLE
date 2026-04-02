@@ -157,4 +157,4 @@ const RelatedProducts = ({ currentProductId }) => {
     );
 };
 
-export default RelatedProducts;
+export default React.memo(RelatedProducts);
