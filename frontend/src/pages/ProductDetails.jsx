@@ -155,7 +155,7 @@ const ProductDetails = () => {
     return (
         <div>
             <Helmet>
-                <title>{product.name} | Hasthkala Handmade</title>
+                <title>{product.name} | Craftelle</title>
                 <meta name="description" content={product.description.substring(0, 150)} />
                 <meta property="og:title" content={product.name} />
                 <meta property="og:image" content={product.images[0]?.url} />

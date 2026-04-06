@@ -118,9 +118,9 @@ const Home = () => {
     return (
         <div style={{ overflowX: 'hidden' }}>
             <Helmet>
-                <title>Hasthkala | The Art of Thoughtful Gifting</title>
+                <title>Craftelle</title>
                 <meta name="description" content="Celebrate life's special moments with personalized, handcrafted creations like Resin Art, Clocks, Nameplates, and custom keepsakes that turn memories into timeless treasures." />
-                <meta property="og:title" content="Hasthkala | Handmade & Personalized Gifts" />
+                <meta property="og:title" content="Craftelle | Handmade & Personalized Gifts" />
                 <meta property="og:description" content="Turn Your Memories Into Timeless Treasures. Premium personalized and handmade gifts." />
             </Helmet>
             { }
