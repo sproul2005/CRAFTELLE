@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, User, Menu, X, LogOut, Search } from 'lucide-react';
+import { Heart, User, Menu, X, LogOut, Search, ShoppingBag } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
@@ -257,30 +257,32 @@ const Navbar = () => {
 
                     {}
                     {!isAdmin && (
-                        <Link to="/wishlist" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'var(--color-primary)', fontWeight: 600 }}>
-                            <div style={{ position: 'relative', display: 'flex' }}>
-                                <Heart size={24} fill="none" color="#333" strokeWidth={1.5} />
-                                {wishlistItems.length > 0 && (
-                                    <span style={{
-                                        position: 'absolute',
-                                        top: -5,
-                                        right: -8,
-                                        background: 'var(--color-primary)',
-                                        color: 'white',
-                                        fontSize: '0.7rem',
-                                        minWidth: '18px',
-                                        height: '18px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        borderRadius: '50%',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        {wishlistItems.length}
-                                    </span>
-                                )}
-                            </div>
-                        </Link>
+                        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+                            {wishlistItems.length > 0 && (
+                                <Link to="/wishlist" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'var(--color-primary)' }}>
+                                    <div style={{ position: 'relative', display: 'flex' }}>
+                                        <Heart size={24} fill="none" color="#333" strokeWidth={1.5} />
+                                        <span style={{
+                                            position: 'absolute', top: -5, right: -8, background: 'var(--color-primary)', color: 'white', fontSize: '0.7rem', minWidth: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', fontWeight: 'bold'
+                                        }}>
+                                            {wishlistItems.length}
+                                        </span>
+                                    </div>
+                                </Link>
+                            )}
+                            {cartItems.length > 0 && (
+                                <Link to="/cart" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'var(--color-primary)' }}>
+                                    <div style={{ position: 'relative', display: 'flex' }}>
+                                        <ShoppingBag size={24} fill="none" color="#333" strokeWidth={1.5} />
+                                        <span style={{
+                                            position: 'absolute', top: -5, right: -8, background: '#111', color: 'white', fontSize: '0.7rem', minWidth: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', fontWeight: 'bold'
+                                        }}>
+                                            {cartItems.length}
+                                        </span>
+                                    </div>
+                                </Link>
+                            )}
+                        </div>
                     )}
                 </div>
 
@@ -406,14 +408,20 @@ const Navbar = () => {
                                 </Link>
                             ))}
                             {!isAdmin && (
-                                <Link to="/wishlist" onClick={toggleMenu} style={{ fontSize: '1rem', color: '#333', textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    Wishlist
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                     {wishlistItems.length > 0 && (
-                                        <span style={{ background: 'var(--color-primary)', color: 'white', padding: '2px 8px', borderRadius: '10px', fontSize: '0.8rem' }}>
-                                            {wishlistItems.length} items
-                                        </span>
+                                        <Link to="/wishlist" onClick={toggleMenu} style={{ fontSize: '1rem', color: '#333', textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            Wishlist
+                                            <span style={{ background: 'var(--color-primary)', color: 'white', padding: '2px 8px', borderRadius: '10px', fontSize: '0.8rem' }}>{wishlistItems.length} items</span>
+                                        </Link>
                                     )}
-                                </Link>
+                                    {cartItems.length > 0 && (
+                                        <Link to="/cart" onClick={toggleMenu} style={{ fontSize: '1rem', color: '#333', textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            Pending Orders
+                                            <span style={{ background: '#111', color: 'white', padding: '2px 8px', borderRadius: '10px', fontSize: '0.8rem' }}>{cartItems.length} drafts</span>
+                                        </Link>
+                                    )}
+                                </div>
                             )}
                             {user ? (
                                 <>
