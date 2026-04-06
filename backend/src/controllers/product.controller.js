@@ -40,7 +40,7 @@ exports.createProduct = async (req, res, next) => {
             imagesLinks = [];
             for (let i = 0; i < req.files.length; i++) {
                 const result = await cloudinary.uploader.upload(req.files[i].path, {
-                    folder: 'hasthkala/products'
+                    folder: 'craftelle/products'
                 });
                 if (result?.public_id && result?.secure_url) {
                     imagesLinks.push({
@@ -193,7 +193,7 @@ exports.updateProduct = async (req, res, next) => {
         if (req.files && req.files.length > 0) {
             for (let i = 0; i < req.files.length; i++) {
                 const result = await cloudinary.uploader.upload(req.files[i].path, {
-                    folder: 'hasthkala/products'
+                    folder: 'craftelle/products'
                 });
                 if (result?.public_id && result?.secure_url) {
                     imagesLinks.push({

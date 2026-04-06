@@ -12,7 +12,7 @@ exports.uploadImage = async (req, res, next) => {
 
         
         const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: 'hasthkala/custom_uploads'
+            folder: 'craftelle/custom_uploads'
         });
 
         

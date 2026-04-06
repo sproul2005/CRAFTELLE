@@ -30,7 +30,7 @@ const Register = () => {
                 style={{ width: '100%', maxWidth: '440px', backgroundColor: 'white', padding: 'clamp(2rem, 5vw, 3.5rem)', borderRadius: '16px', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.05)' }}
             >
                 <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                    <h2 style={{ fontFamily: 'serif', fontSize: '2.4rem', color: '#0f172a', margin: '0 0 0.5rem 0', fontWeight: 500 }}>Join Hasthkala</h2>
+                    <h2 style={{ fontFamily: 'serif', fontSize: '2.4rem', color: '#0f172a', margin: '0 0 0.5rem 0', fontWeight: 500 }}>Join Craftelle</h2>
                     <p style={{ color: '#64748b', margin: 0, fontSize: '0.95rem' }}>Create an account to track your orders and more.</p>
                 </div>
 
