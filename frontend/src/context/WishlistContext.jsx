@@ -11,7 +11,7 @@ export const WishlistProvider = ({ children }) => {
 
     
     useEffect(() => {
-        const storedWishlist = localStorage.getItem('hasthkala_wishlist');
+        const storedWishlist = localStorage.getItem('craftelle_wishlist');
         if (storedWishlist) {
             try {
                 setWishlistItems(JSON.parse(storedWishlist));
@@ -23,7 +23,7 @@ export const WishlistProvider = ({ children }) => {
 
     
     useEffect(() => {
-        localStorage.setItem('hasthkala_wishlist', JSON.stringify(wishlistItems));
+        localStorage.setItem('craftelle_wishlist', JSON.stringify(wishlistItems));
     }, [wishlistItems]);
 
     const addToWishlist = (product) => {

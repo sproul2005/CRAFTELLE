@@ -58,7 +58,7 @@ const sendNotification = async (type, data) => {
                         If you have any questions, please reply to this email or contact our support team.
                     </p>
                     <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-                    <p style="font-size: 0.8em; color: #999; text-align: center;">Hasthkala E-Commerce</p>
+                    <p style="font-size: 0.8em; color: #999; text-align: center;">Craftelle E-Commerce</p>
                 </div>
             `;
         } else if (type === 'ADMIN_NEW_ORDER') {
@@ -85,17 +85,17 @@ const sendNotification = async (type, data) => {
                         Please log into the Admin panel to view the full details and process the order.
                     </p>
                     <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-                    <p style="font-size: 0.8em; color: #999; text-align: center;">Hasthkala E-Commerce Notifications</p>
+                    <p style="font-size: 0.8em; color: #999; text-align: center;">Craftelle E-Commerce Notifications</p>
                 </div>
             `;
         } else {
-            subject = `Notification from Hasthkala`;
+            subject = `Notification from Craftelle`;
             htmlBody = `<p>This is a default notification: ${type}</p>`;
         }
 
         
         let info = await transporter.sendMail({
-            from: '"Hasthkala Support" <support@hasthkala.com>', 
+            from: '"Craftelle Support" <craftelle0203@gmail.com>', 
             to: data.email, 
             subject: subject, 
             html: htmlBody, 

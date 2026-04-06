@@ -166,9 +166,9 @@ const Checkout = () => {
                 key: keyResponse.key,
                 amount: rpOrderResponse.order.amount,
                 currency: "INR",
-                name: "Hasthkala",
+                name: "Craftelle",
                 description: `Purchase of ${product.name}`,
-                image: "https://res.cloudinary.com/hasthkala/image/upload/v1/logo", 
+                image: "https://res.cloudinary.com/craftelle/image/upload/v1/logo", 
                 order_id: rpOrderResponse.order.id,
                 handler: async function (response) {
                     try {

@@ -1,6 +1,6 @@
-# HASTHKALA Backend API
+# CRAFTELLE Backend API
 
-This is the backend API for the HASTHKALA e-commerce platform. It provides RESTful endpoints for user authentication, product management, cart, orders, payments, and more.
+This is the backend API for the CRAFTELLE e-commerce platform. It provides RESTful endpoints for user authentication, product management, cart, orders, payments, and more.
 
 ## Tech Stack
 -   **Runtime**: Node.js
@@ -36,7 +36,7 @@ This is the backend API for the HASTHKALA e-commerce platform. It provides RESTf
 
     ```env
     PORT=5000
-    MONGO_URI=mongodb://localhost:27017/hasthkala
+    MONGO_URI=mongodb://localhost:27017/craftelle
     JWT_SECRET=your_jwt_secret_key_change_this_in_production
     CLOUDINARY_CLOUD_NAME=your_cloud_name
     CLOUDINARY_API_KEY=your_api_key

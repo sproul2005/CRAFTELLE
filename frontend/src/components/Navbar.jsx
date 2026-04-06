@@ -83,7 +83,7 @@ const Navbar = () => {
                     {}
                     {}
                     <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.5px', color: '#333' }}>
-                        Hasthkala
+                        Craftelle
                     </span>
                 </Link>
 

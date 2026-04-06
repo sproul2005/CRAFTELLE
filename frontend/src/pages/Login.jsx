@@ -73,7 +73,7 @@ const Login = () => {
                 </form>
 
                 <p style={{ marginTop: '2rem', textAlign: 'center', fontSize: '0.95rem', color: '#64748b' }}>
-                    New to Hasthkala? <Link to="/register" style={{ color: '#111', fontWeight: 600, textDecoration: 'none' }}>Create an Account</Link>
+                    New to Craftelle? <Link to="/register" style={{ color: '#111', fontWeight: 600, textDecoration: 'none' }}>Create an Account</Link>
                 </p>
             </motion.div>
         </div>

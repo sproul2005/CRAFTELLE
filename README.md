@@ -1,6 +1,6 @@
-# Hasthkala - E-Commerce Platform
+# Craftelle - E-Commerce Platform
 
-Hasthkala is a premium, full-stack e-commerce platform dedicated to handcrafted art masterpieces, including Resin Art, String Art, Mandala Art, Portraits, Candles, and Rakhis. It provides a seamless shopping experience for users and a robust admin dashboard for managing the store.
+Craftelle is a premium, full-stack e-commerce platform dedicated to handcrafted art masterpieces, including Resin Art, String Art, Mandala Art, Portraits, Candles, and Rakhis. It provides a seamless shopping experience for users and a robust admin dashboard for managing the store.
 
 ## 🌟 Key Features
 
@@ -44,8 +44,8 @@ Hasthkala is a premium, full-stack e-commerce platform dedicated to handcrafted 
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/sproul2005/HASTHKALA.git
-cd HASTHKALA
+git clone https://github.com/sproul2005/CRAFTELLE.git
+cd CRAFTELLE
 ```
 
 ### 2. Backend Setup
@@ -59,7 +59,7 @@ Create a `.env` file in the `backend` directory and add the following variables:
 ```env
 PORT=5000
 NODE_ENV=DEVELOPMENT
-DB_LOCAL_URI=mongodb://localhost:27017/hasthkala
+DB_LOCAL_URI=mongodb://localhost:27017/craftelle
 JWT_SECRET=your_jwt_secret_key
 JWT_EXPIRES_TIME=7d
 COOKIE_EXPIRES_TIME=7
@@ -92,7 +92,7 @@ The application should now be running. The frontend typically runs on `http://lo
 ## 📁 Project Structure
 
 ```text
-HASTHKALA/
+CRAFTELLE/
 ├── backend/                  # Express.js REST API
 │   ├── src/
 │   │   ├── config/           # Database and Cloudinary configuration

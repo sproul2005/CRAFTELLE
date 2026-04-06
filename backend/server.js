@@ -39,7 +39,7 @@ app.use('/api/v1/admin', require('./src/routes/analytics.routes'));
 
 
 app.get('/', (req, res) => {
-    res.send('HASTHKALA Backend is running');
+    res.send('CRAFTELLE Backend is running');
 });
 
 

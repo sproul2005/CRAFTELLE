@@ -487,7 +487,7 @@ const Home = () => {
                     <h2 style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)', fontFamily: 'var(--font-heading)' }}>Our Story</h2>
                     <div style={{ maxWidth: '800px', margin: '0 auto', lineHeight: '1.8', fontSize: 'clamp(1rem, 2vw, 1.1rem)', color: '#444' }}>
                         <p style={{ marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}>
-                            Welcome to <strong>Hasthkala</strong>, where the joy of gifting meets contemporary elegance.
+                            Welcome to <strong>Craftelle</strong>, where the joy of gifting meets contemporary elegance.
                             Born from a passion for bringing smiles to people's faces, we curate a collection of personalized, soulful gifts that tell a beautiful story.
                         </p>
                         <p style={{ marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}>

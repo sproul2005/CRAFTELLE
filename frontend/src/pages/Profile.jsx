@@ -171,7 +171,7 @@ const Profile = () => {
                                                             {item.image && <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }} referrerPolicy="no-referrer" />}
                                                         </div>
                                                         <div style={{ flex: 1 }}>
-                                                            <Link to={`/product/${item.product}`} style={{ fontWeight: 600, fontSize: 'clamp(1rem, 2.5vw, 1.1rem)', color: 'var(--color-text)', textDecoration: 'none', display: 'block', marginBottom: '0.25rem' }}>{item.name}</Link>
+                                                            <Link to={`/product/${item.product?._id || item.product}`} style={{ fontWeight: 600, fontSize: 'clamp(1rem, 2.5vw, 1.1rem)', color: 'var(--color-text)', textDecoration: 'none', display: 'block', marginBottom: '0.25rem' }}>{item.name}</Link>
                                                             <p style={{ color: 'var(--color-text-light)', fontSize: '0.9rem' }}>Size: {item.size}  |  Qty: {item.quantity}</p>
                                                             {item.customization && item.customization.text && (
                                                                 <p style={{ color: 'var(--color-text-light)', fontSize: '0.9rem', marginTop: '0.25rem', backgroundColor: '#fcfaf8', padding: '0.5rem', borderRadius: '4px', display: 'inline-block' }}>Text: "{item.customization.text}"</p>
@@ -179,7 +179,7 @@ const Profile = () => {
                                                         </div>
                                                         <div className="order-item-actions" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'flex-start', gap: '0.5rem' }}>
                                                             <p style={{ fontWeight: 600, fontSize: 'clamp(1rem, 2.5vw, 1.1rem)' }}>₹{item.price}</p>
-                                                            <Link to={`/product/${item.product}`} className="btn-outline" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: 'auto' }}>
+                                                            <Link to={`/product/${item.product?._id || item.product}`} state={{ openReviewModal: true }} className="btn-outline" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: 'auto' }}>
                                                                 <Star size={14} /> Review
                                                             </Link>
                                                         </div>

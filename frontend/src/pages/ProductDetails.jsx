@@ -37,7 +37,11 @@ const ProductDetails = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
         fetchProductAndReviews();
-    }, [id]);
+        
+        if (location.state?.openReviewModal) {
+            setIsReviewModalOpen(true);
+        }
+    }, [id, location.state]);
 
     const fetchProductAndReviews = async () => {
         try {
@@ -82,7 +86,7 @@ const ProductDetails = () => {
             try {
                 await navigator.share({
                     title: product.name,
-                    text: `Check out ${product.name} at Hasthkala!`,
+                    text: `Check out ${product.name} at Craftelle!`,
                     url: window.location.href
                 });
             } catch (error) {

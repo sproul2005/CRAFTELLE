@@ -25,7 +25,7 @@ const Footer = () => {
                         fontFamily: 'var(--font-heading)',
                         letterSpacing: '-0.5px'
                     }}>
-                        Hasthkala.
+                        Craftelle.
                     </h3>
                     <p style={{ color: '#aaa', lineHeight: '1.6', fontSize: '0.95rem' }}>
                         Curating the finest handcrafted treasures. We bring you products that tell a story, crafted with love and tradition.
@@ -62,7 +62,7 @@ const Footer = () => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', color: '#aaa' }}>
                             <Mail size={18} />
-                            <span style={{ fontSize: '0.95rem' }}>hasthkala0203@gmail.com</span>
+                            <span style={{ fontSize: '0.95rem' }}>craftelle0203@gmail.com</span>
                         </div>
                         <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', color: '#aaa' }}>
                             <Phone size={18} />
@@ -83,7 +83,7 @@ const Footer = () => {
                 color: '#666',
                 fontSize: '0.85rem'
             }}>
-                <p>&copy; {new Date().getFullYear()} Hasthkala. All rights reserved.</p>
+                <p>&copy; {new Date().getFullYear()} Craftelle. All rights reserved.</p>
             </div>
         </footer>
     );
