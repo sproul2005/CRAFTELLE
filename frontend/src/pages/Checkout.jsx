@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 import api from '../services/api';
 import { ShoppingBag, Truck, Camera, CreditCard, ChevronLeft, Upload, X, ShieldCheck, RefreshCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getOptimizedUrl } from '../utils/imageUtils';
 
 const Checkout = () => {
     const location = useLocation();
@@ -328,7 +329,7 @@ const Checkout = () => {
                                     <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', fontSize: '1.5rem', color: '#002a4d' }}><ShoppingBag size={24} color="#1d4ed8" /> Order Summary</h2>
                                     <div className="premium-summary-card">
                                         <div className="summary-product-details">
-                                            <div className="summary-img-container"><img src={activeProduct.images[0]?.url} alt={activeProduct.name} className="summary-img" /></div>
+                                            <div className="summary-img-container"><img src={getOptimizedUrl(activeProduct.images[0]?.url, 300)} loading="lazy" alt={activeProduct.name} className="summary-img" /></div>
                                             <div className="summary-text-container">
                                                 <h3 className="summary-title">{activeProduct.name}</h3>
                                                 <p style={{ color: '#6b7280', fontSize: '1rem', margin: 0 }}>{activeProduct.category}</p>

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { Filter, Search, Heart, Star } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
+import { getOptimizedUrl } from '../utils/imageUtils';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
@@ -35,10 +36,8 @@ const Shop = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const { data } = await api.get('/products?limit=1000');
-                const allProducts = data.products || [];
-
-                const existingCategories = [...new Set(allProducts.map(p => p.category))];
+                const { data } = await api.get('/products/categories');
+                const existingCategories = data.categories || [];
 
                 const filtered = allowedCategories.filter(c => existingCategories.includes(c));
                 setAvailableCategories(filtered);
@@ -220,8 +219,9 @@ const Shop = () => {
                             <Link to={`/product/${product._id}`} className="product-img-link" style={{ display: 'block', overflow: 'hidden', position: 'relative' }}>
                                 {product.images && product.images.length > 0 ? (
                                     <img
-                                        src={product.images[0].url}
+                                        src={getOptimizedUrl(product.images[0].url)}
                                         alt={product.name}
+                                        loading="lazy"
                                         referrerPolicy="no-referrer"
                                         style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
                                         onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}

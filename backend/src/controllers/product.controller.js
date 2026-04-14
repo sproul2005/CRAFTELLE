@@ -324,3 +324,18 @@ exports.getProductReviews = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Get all unique categories
+// @route   GET /api/v1/products/categories
+// @access  Public
+exports.getCategories = async (req, res, next) => {
+    try {
+        const categories = await Product.distinct('category');
+        res.status(200).json({
+            success: true,
+            categories
+        });
+    } catch (err) {
+        next(err);
+    }
+};

@@ -7,6 +7,7 @@ import { useWishlist } from '../context/WishlistContext';
 import api from '../services/api';
 import { MessageCircle, Sparkles, X, ChevronDown, Package, Settings, PenTool, CheckCircle, Heart, Star } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { getOptimizedUrl } from '../utils/imageUtils';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -71,14 +72,28 @@ const Home = () => {
 
     const allowedCategories = ['Anniversary', 'Marriage', 'Birthday', 'Baby Details', 'Gifts', 'Nameplate', 'Clock', 'Bangles', 'Resin Art', 'String Art', 'Candles', 'Rakhi'];
 
+    const categoryImages = {
+        'Anniversary': '/categories/anniversary.png',
+        'Marriage': 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=200&q=80',
+        'Birthday': 'https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=200&q=80',
+        'Baby Details': 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=200&q=80',
+        'Gifts': 'https://images.unsplash.com/photo-1512909006721-3d6018887383?w=200&q=80',
+        'Nameplate': '/categories/nameplate.png',
+        'Clock': 'https://images.unsplash.com/photo-1501139083538-0139583c060f?w=200&q=80',
+        'Bangles': 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=200&q=80',
+        'Resin Art': 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=200&q=80',
+        'String Art': 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200&q=80',
+        'Candles': 'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=200&q=80',
+        'Rakhi': 'https://images.unsplash.com/photo-1600812140131-01648a7ebdf4?w=200&q=80',
+    };
+
     const [availableCategories, setAvailableCategories] = useState([]);
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const { data } = await api.get('/products?limit=1000');
-                const allProducts = data.products || [];
-                const existingCategories = [...new Set(allProducts.map(p => p.category))];
+                const { data } = await api.get('/products/categories');
+                const existingCategories = data.categories || [];
                 const filtered = allowedCategories.filter(c => existingCategories.includes(c));
                 setAvailableCategories(filtered);
             } catch (error) {
@@ -109,11 +124,6 @@ const Home = () => {
         };
         fetchProducts();
     }, [category]);
-
-    const getOptimizedUrl = (url) => {
-        if (!url || !url.includes('cloudinary')) return url;
-        return url.replace('/upload/', '/upload/f_auto,q_auto,w_500/');
-    };
 
     return (
         <div style={{ overflowX: 'hidden' }}>
@@ -276,7 +286,7 @@ const Home = () => {
                                 }}>
                                 <div style={{
                                     width: '70px', height: '70px', borderRadius: '50%',
-                                    backgroundImage: `url(https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=200&q=80)`,
+                                    backgroundImage: `url(${categoryImages[c] || 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=200&q=80'})`,
                                     backgroundSize: 'cover',
                                     boxShadow: category === c ? '0 0 0 2px var(--color-primary)' : '0 2px 10px rgba(0,0,0,0.05)'
                                 }}></div>
@@ -313,8 +323,9 @@ const Home = () => {
                                 <Link to={`/product/${product._id}`} state={{ fromCategory: category }} className="product-img-link" style={{ display: 'block', overflow: 'hidden', position: 'relative' }}>
                                     {product.images && product.images.length > 0 ? (
                                         <img
-                                            src={product.images[0].url}
+                                            src={getOptimizedUrl(product.images[0].url)}
                                             alt={product.name}
+                                            loading="lazy"
                                             referrerPolicy="no-referrer"
                                             style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
                                             onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
