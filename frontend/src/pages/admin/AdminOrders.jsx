@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { Eye, CheckCircle, XCircle } from 'lucide-react';
+import { getOptimizedUrl } from '../../utils/imageUtils';
 
 const AdminOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -130,7 +131,7 @@ const AdminOrders = () => {
                                             <div style={{ display: 'grid', gap: '1rem', marginTop: '1rem' }}>
                                                 {order.orderItems.map((item, idx) => (
                                                     <div key={idx} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', borderBottom: '1px solid #ddd', paddingBottom: '0.5rem' }}>
-                                                        <img src={item.image} alt={item.name} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' }} />
+                                                        <img src={getOptimizedUrl(item.image, 100)} alt={item.name} loading="lazy" style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' }} />
                                                         <div style={{ flex: 1 }}>
                                                             <p style={{ fontWeight: 600 }}>{item.name}</p>
                                                             <p style={{ fontSize: '0.9rem' }}>Size: {item.size} | Qty: {item.quantity}</p>
@@ -148,7 +149,8 @@ const AdminOrders = () => {
                                                                                     <div key={imgIdx} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>
                                                                                         <a href={imgUrl} target="_blank" rel="noopener noreferrer">
                                                                                             <img
-                                                                                                src={imgUrl}
+                                                                                                src={getOptimizedUrl(imgUrl, 200)}
+                                                                                                loading="lazy"
                                                                                                 alt={`Custom Upload ${imgIdx + 1}`}
                                                                                                 style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '4px', border: '1px solid #ddd' }}
                                                                                                 onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/100?text=No+Image'; }}

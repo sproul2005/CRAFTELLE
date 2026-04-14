@@ -9,7 +9,8 @@ const {
     updateProduct,
     deleteProduct,
     createProductReview,
-    getProductReviews
+    getProductReviews,
+    getCategories
 } = require('../controllers/product.controller');
 const upload = require('../middleware/upload.middleware');
 const { protect, authorize } = require('../middleware/auth.middleware');
@@ -17,6 +18,9 @@ const { protect, authorize } = require('../middleware/auth.middleware');
 router.route('/')
     .get(cache('5 minutes'), getProducts)
     .post(protect, authorize('admin'), upload.array('images', 5), createProduct);
+
+router.route('/categories')
+    .get(cache('5 minutes'), getCategories);
 
 router.route('/:id')
     .get(cache('5 minutes'), getProduct)

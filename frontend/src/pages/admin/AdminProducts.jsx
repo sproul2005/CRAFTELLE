@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { Edit, Trash2, Plus } from 'lucide-react';
+import { getOptimizedUrl } from '../../utils/imageUtils';
 
 const AdminProducts = () => {
     const [products, setProducts] = useState([]);
@@ -62,7 +63,8 @@ const AdminProducts = () => {
                             <tr key={product._id} style={{ borderBottom: '1px solid #eee' }}>
                                 <td style={{ padding: '1rem' }}>
                                     <img
-                                        src={product.images && product.images[0] ? product.images[0].url : '/placeholder.jpg'}
+                                        src={product.images && product.images[0] ? getOptimizedUrl(product.images[0].url, 100) : '/placeholder.jpg'}
+                                        loading="lazy"
                                         onError={(e) => { e.target.style.display = 'none' }}
                                         alt={product.name}
                                         style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', backgroundColor: '#eee' }}

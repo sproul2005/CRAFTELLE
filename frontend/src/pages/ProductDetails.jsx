@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import RelatedProducts from '../components/RelatedProducts';
 import Footer from '../components/Footer';
+import { getOptimizedUrl } from '../utils/imageUtils';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -128,11 +129,6 @@ const ProductDetails = () => {
 
     const activeSizePrice = product.sizes.find(s => s.label === selectedSize)?.price || product.price;
 
-    const getOptimizedUrl = (url) => {
-        if (!url || !url.includes('cloudinary')) return url;
-        return url.replace('/upload/', '/upload/f_auto,q_auto,w_800/');
-    };
-
     const schemaData = {
         "@context": "https://schema.org/",
         "@type": "Product",
@@ -224,8 +220,9 @@ const ProductDetails = () => {
                                             }}
                                         >
                                             <img
-                                                src={img.url}
+                                                src={getOptimizedUrl(img.url, 200)}
                                                 alt={`${product.name} thumbnail ${idx + 1}`}
+                                                loading="lazy"
                                                 referrerPolicy="no-referrer"
                                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                             />

@@ -3,6 +3,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Heart, ExternalLink, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getOptimizedUrl } from '../utils/imageUtils';
 
 const Wishlist = () => {
     const { wishlistItems, removeFromWishlist, clearWishlist } = useWishlist();
@@ -107,8 +108,9 @@ const Wishlist = () => {
                             <Link to={`/product/${item._id}`} style={{ display: 'block', height: '220px', overflow: 'hidden', position: 'relative' }}>
                                 {item.images && item.images.length > 0 ? (
                                     <img
-                                        src={item.images[0].url}
+                                        src={getOptimizedUrl(item.images[0].url, 300)}
                                         alt={item.name}
+                                        loading="lazy"
                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                     />
                                 ) : (

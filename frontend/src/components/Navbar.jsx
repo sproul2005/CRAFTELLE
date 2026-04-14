@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import api from '../services/api';
+import { getOptimizedUrl } from '../utils/imageUtils';
 
 const Navbar = () => {
     const { user, logout, isAdmin } = useAuth();
@@ -160,7 +161,7 @@ const Navbar = () => {
                                             >
                                                 <div style={{ width: '40px', height: '40px', backgroundColor: '#f3f4f6', flexShrink: 0, borderRadius: '4px', overflow: 'hidden' }}>
                                                     {product.images && product.images.length > 0 ? (
-                                                        <img src={product.images[0].url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} referrerPolicy="no-referrer" />
+                                                        <img src={getOptimizedUrl(product.images[0].url, 100)} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} referrerPolicy="no-referrer" />
                                                     ) : (
                                                         <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: '#9ca3af' }}>No Img</div>
                                                     )}
@@ -356,7 +357,7 @@ const Navbar = () => {
                                         >
                                             <div style={{ width: '40px', height: '40px', backgroundColor: '#f3f4f6', flexShrink: 0, borderRadius: '4px', overflow: 'hidden' }}>
                                                 {product.images && product.images.length > 0 ? (
-                                                    <img src={product.images[0].url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} referrerPolicy="no-referrer" />
+                                                    <img src={getOptimizedUrl(product.images[0].url, 100)} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} referrerPolicy="no-referrer" />
                                                 ) : (
                                                     <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: '#9ca3af' }}>No Img</div>
                                                 )}

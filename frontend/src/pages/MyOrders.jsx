@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { Package, ChevronRight, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getOptimizedUrl } from '../utils/imageUtils';
 
 const MyOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -74,7 +75,7 @@ const MyOrders = () => {
                             <div style={{ padding: '1rem' }}>
                                 {order.orderItems.map((item, idx) => (
                                     <div key={idx} style={{ display: 'flex', gap: '1rem', marginBottom: idx !== order.orderItems.length - 1 ? '1rem' : 0 }}>
-                                        <img src={item.image} alt={item.name} referrerPolicy="no-referrer" style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' }} />
+                                        <img src={getOptimizedUrl(item.image, 100)} alt={item.name} loading="lazy" referrerPolicy="no-referrer" style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' }} />
                                         <div style={{ flex: 1 }}>
                                             <h4 style={{ fontSize: '1rem', marginBottom: '0.2rem' }}>{item.name}</h4>
                                             <p style={{ fontSize: '0.9rem', color: 'var(--color-text-light)' }}>Size: {item.size} | Qty: {item.quantity}</p>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { ChevronLeft, ChevronRight, Star, Heart } from 'lucide-react';
+import { getOptimizedUrl } from '../utils/imageUtils';
 
 const RelatedProducts = ({ currentProductId }) => {
     const [products, setProducts] = useState([]);
@@ -103,8 +104,9 @@ const RelatedProducts = ({ currentProductId }) => {
                         <div style={{ width: '100%', height: '240px', backgroundColor: '#f3f4f6', position: 'relative' }}>
                             {product.images?.[0] ? (
                                 <img
-                                    src={product.images[0].url}
+                                    src={getOptimizedUrl(product.images[0].url, 300)}
                                     alt={product.name}
+                                    loading="lazy"
                                     style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s ease' }}
                                     onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
                                     onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}

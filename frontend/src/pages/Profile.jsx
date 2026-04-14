@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { User, Lock, Package, Star } from 'lucide-react';
+import { getOptimizedUrl } from '../utils/imageUtils';
 
 const Profile = () => {
     const { user, logout } = useAuth();
@@ -168,7 +169,7 @@ const Profile = () => {
                                                 {order.orderItems.map((item, index) => (
                                                     <div key={index} className="order-item-layout" style={{ display: 'flex', gap: '1.5rem', marginBottom: index !== order.orderItems.length - 1 ? '1.5rem' : '0', paddingBottom: index !== order.orderItems.length - 1 ? '1.5rem' : '0', borderBottom: index !== order.orderItems.length - 1 ? '1px solid var(--color-accent)' : 'none' }}>
                                                         <div style={{ width: 'clamp(80px, 20vw, 100px)', height: 'clamp(80px, 20vw, 100px)', backgroundColor: 'var(--color-surface)', flexShrink: 0 }}>
-                                                            {item.image && <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }} referrerPolicy="no-referrer" />}
+                                                            {item.image && <img src={getOptimizedUrl(item.image, 100)} alt={item.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }} referrerPolicy="no-referrer" />}
                                                         </div>
                                                         <div style={{ flex: 1 }}>
                                                             <Link to={`/product/${item.product?._id || item.product}`} style={{ fontWeight: 600, fontSize: 'clamp(1rem, 2.5vw, 1.1rem)', color: 'var(--color-text)', textDecoration: 'none', display: 'block', marginBottom: '0.25rem' }}>{item.name}</Link>

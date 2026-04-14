@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, ShoppingBag, Camera, ChevronRight } from 'lucide-react';
+import { getOptimizedUrl } from '../utils/imageUtils';
 
 const Cart = () => {
     const { cartItems, removeDraft } = useCart();
@@ -44,7 +45,7 @@ const Cart = () => {
                         <div key={draft.id || index} style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'white', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '1.5rem', boxShadow: '0 4px 15px rgba(0,0,0,0.03)' }}>
                             <div style={{ display: 'flex', gap: '1.5rem', marginBottom: '1.5rem' }}>
                                 <div style={{ width: '100px', height: '100px', background: '#f9fafb', borderRadius: '8px', overflow: 'hidden', flexShrink: 0 }}>
-                                    {product.images?.[0] && <img src={product.images[0].url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={product.name} />}
+                                    {product.images?.[0] && <img src={getOptimizedUrl(product.images[0].url, 200)} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={product.name} />}
                                 </div>
                                 <div style={{ flex: 1 }}>
                                     <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem', color: '#111' }}>{product.name}</h4>
