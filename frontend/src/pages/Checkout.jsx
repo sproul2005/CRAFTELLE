@@ -194,9 +194,6 @@ const Checkout = () => {
                 totalPrice: totalAmount
             };
 
-            const { data: orderResponse } = await api.post('/orders/new', orderData);
-            const createdOrderId = orderResponse.order._id;
-
             let keyResponse;
             try {
                 const res = await api.get('/payment/key');
@@ -211,9 +208,7 @@ const Checkout = () => {
                 rpOrderResponse = res.data;
             } catch (err) {
                 console.error('Razorpay creation failed:', err);
-                alert(`Payment gateway unreachable. Order #${createdOrderId.substring(0, 6)} saved to your account. Try paying later.`);
-                removeDraft(currentDraftId); // Cleanup draft
-                navigate('/my-orders');
+                alert('Payment gateway unreachable. Please try again later.');
                 return;
             }
 
@@ -227,6 +222,9 @@ const Checkout = () => {
                 order_id: rpOrderResponse.order.id,
                 handler: async function (response) {
                     try {
+                        const { data: orderResponse } = await api.post('/orders/new', orderData);
+                        const createdOrderId = orderResponse.order._id;
+
                         const verifyData = {
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
@@ -240,9 +238,8 @@ const Checkout = () => {
                             navigate('/my-orders');
                         }
                     } catch (err) {
-                        alert("Payment verification failed! If deducted, contact support.");
-                        removeDraft(currentDraftId);
-                        navigate('/my-orders');
+                        alert("Payment verification or order creation failed! If deducted, contact support. Your draft is saved.");
+                        navigate(`/product/${activeProduct._id}`);
                     }
                 },
                 prefill: {
@@ -250,14 +247,19 @@ const Checkout = () => {
                     email: user?.email || '',
                     contact: shippingAddress.phone
                 },
-                theme: { color: "#111111" }
+                theme: { color: "#111111" },
+                modal: {
+                    ondismiss: function() {
+                        alert("Payment was cancelled. Your progress has been saved in your cart.");
+                        navigate(`/product/${activeProduct._id}`);
+                    }
+                }
             };
 
             const rzp = new window.Razorpay(options);
             rzp.on('payment.failed', function (response) {
-                alert(`Payment Failed: ${response.error.description}`);
-                removeDraft(currentDraftId);
-                navigate('/my-orders');
+                alert(`Payment Failed: ${response.error.description}. Your progress has been saved.`);
+                navigate(`/product/${activeProduct._id}`);
             });
             rzp.open();
 
