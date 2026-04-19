@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
@@ -29,6 +29,25 @@ const ProductDetails = () => {
     const [customText, setCustomText] = useState('');
     const [customImage, setCustomImage] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const carouselRef = useRef(null);
+
+    const handleScroll = (e) => {
+        if (!carouselRef.current) return;
+        const scrollLeft = e.target.scrollLeft;
+        const width = e.target.clientWidth;
+        const newIndex = Math.round(scrollLeft / width);
+        if (newIndex !== currentImageIndex) {
+            setCurrentImageIndex(newIndex);
+        }
+    };
+
+    const handleThumbnailClick = (idx) => {
+        setCurrentImageIndex(idx);
+        if (carouselRef.current) {
+            const width = carouselRef.current.clientWidth;
+            carouselRef.current.scrollTo({ left: idx * width, behavior: 'smooth' });
+        }
+    };
 
     // Review Form State
     const [rating, setRating] = useState(5);
@@ -179,17 +198,40 @@ const ProductDetails = () => {
                         {}
                         <div style={{ position: 'relative', marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             {/* Main Image */}
-                            <div style={{ width: '100%', aspectRatio: '1/1', backgroundColor: 'var(--color-surface)', borderRadius: '8px', overflow: 'hidden' }}>
+                            <div 
+                                ref={carouselRef}
+                                onScroll={handleScroll}
+                                className="hide-scrollbar"
+                                style={{ 
+                                    width: '100%', 
+                                    aspectRatio: '1/1', 
+                                    backgroundColor: 'var(--color-surface)', 
+                                    borderRadius: '8px', 
+                                    overflowX: 'auto',
+                                    display: 'flex',
+                                    scrollSnapType: 'x mandatory'
+                                }}
+                            >
                                 {product.images.length > 0 ? (
-                                    <img
-                                        src={getOptimizedUrl(product.images[currentImageIndex].url)}
-                                        alt={`${product.name} main`}
-                                        referrerPolicy="no-referrer"
-                                        fetchpriority="high"
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                    />
+                                    product.images.map((img, idx) => (
+                                        <img
+                                            key={idx}
+                                            src={getOptimizedUrl(img.url)}
+                                            alt={`${product.name} ${idx + 1}`}
+                                            referrerPolicy="no-referrer"
+                                            fetchpriority={idx === 0 ? "high" : "auto"}
+                                            loading={idx === 0 ? "eager" : "lazy"}
+                                            style={{ 
+                                                width: '100%', 
+                                                height: '100%', 
+                                                objectFit: 'cover',
+                                                flexShrink: 0,
+                                                scrollSnapAlign: 'start'
+                                            }}
+                                        />
+                                    ))
                                 ) : (
-                                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>No Image</div>
+                                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>No Image</div>
                                 )}
                             </div>
                             
@@ -206,7 +248,7 @@ const ProductDetails = () => {
                                     {product.images.map((img, idx) => (
                                         <div 
                                             key={idx} 
-                                            onClick={() => setCurrentImageIndex(idx)}
+                                            onClick={() => handleThumbnailClick(idx)}
                                             style={{ 
                                                 flexShrink: 0, 
                                                 width: '80px', 
