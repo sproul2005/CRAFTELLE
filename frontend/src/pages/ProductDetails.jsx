@@ -54,6 +54,7 @@ const ProductDetails = () => {
     const [comment, setComment] = useState('');
     const [isSubmittingReview, setIsSubmittingReview] = useState(false);
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+    const [visibleReviewsCount, setVisibleReviewsCount] = useState(5);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -85,8 +86,10 @@ const ProductDetails = () => {
     };
 
     const handleAddToWishlist = () => {
-        addToWishlist(product);
-        alert("Added to Wishlist!");
+        const success = addToWishlist(product);
+        if (success) {
+            alert("Added to Wishlist!");
+        }
     };
 
     const handleBuyNow = () => {
@@ -193,10 +196,10 @@ const ProductDetails = () => {
                     <ChevronLeft size={16} /> Back
                 </button>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 'clamp(2rem, 5vw, 4rem)', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 'clamp(1rem, 4vw, 3rem)', marginBottom: '1.5rem' }}>
                     {}
                         {}
-                        <div style={{ position: 'relative', marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div style={{ position: 'relative', marginBottom: '0', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             {/* Main Image */}
                             <div 
                                 ref={carouselRef}
@@ -278,7 +281,7 @@ const ProductDetails = () => {
                     <div>
                         <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', marginBottom: '0.2rem', fontFamily: 'serif', color: '#0f172a', fontWeight: 500, lineHeight: 1.1 }}>{product.name}</h1>
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.8rem' }}>
                             <div style={{ display: 'flex' }}>
                                 {[1, 2, 3, 4, 5].map((star) => (
                                     <Star key={star} size={16} fill={star <= Math.round(product.averageRating || 0) ? "#facc15" : "none"} color={star <= Math.round(product.averageRating || 0) ? "#facc15" : "#e5e7eb"} />
@@ -290,7 +293,7 @@ const ProductDetails = () => {
                         </div>
 
                         {}
-                        <div style={{ marginBottom: '2rem' }}>
+                        <div style={{ marginBottom: '1.2rem' }}>
                             <h4 style={{ marginBottom: '0.8rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700, fontFamily: 'serif', color: '#0f172a' }}>Variants</h4>
                             <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
                                 {product.sizes.map(size => (
@@ -318,14 +321,14 @@ const ProductDetails = () => {
                         </div>
 
                         {}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.8rem' }}>
                             <span style={{ fontSize: 'clamp(2rem, 5vw, 2.6rem)', fontWeight: 600, color: '#0f172a', lineHeight: 1 }}>₹{activeSizePrice}</span>
                             <span style={{ fontSize: '1.2rem', textDecoration: 'line-through', color: '#9ca3af', fontWeight: 500 }}>₹{Math.round(activeSizePrice * 1.25)}</span>
                             <span style={{ backgroundColor: '#5b4ae3', color: 'white', padding: '4px 12px', borderRadius: '14px', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.5px' }}>20% OFF</span>
                         </div>
 
                         {}
-                        <div style={{ marginBottom: '1.2rem' }}>
+                        <div style={{ marginBottom: '0.8rem' }}>
                             <h4 style={{ fontSize: '1.25rem', marginBottom: '0.6rem', color: '#0f172a', fontFamily: 'serif', fontWeight: 500 }}>Description</h4>
                             <ul style={{ color: '#374151', lineHeight: '1.5', paddingLeft: '1.2rem', margin: 0, fontSize: '1rem' }}>
                                 {}
@@ -375,7 +378,7 @@ const ProductDetails = () => {
 
                 {}
                 <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem', marginTop: '1rem', paddingBottom: '0.5rem' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: '1.5rem', gap: '1rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: '0.8rem', gap: '0.5rem' }}>
                         <h2 style={{ fontSize: '2.2rem', margin: 0, fontFamily: 'serif', color: '#0f172a', fontWeight: 400 }}>Customer Reviews</h2>
                         <button
                             onClick={() => {
@@ -396,21 +399,35 @@ const ProductDetails = () => {
                         {reviews.length === 0 ? (
                             <p style={{ color: 'var(--color-text-light)' }}>No reviews yet. Be the first to review this product!</p>
                         ) : (
-                            <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
-                                {reviews.map((review) => (
-                                    <div key={review._id} style={{ padding: '0.8rem 1rem', backgroundColor: '#f9fafb', borderRadius: '8px', border: '1px solid #f3f4f6' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                                            <strong style={{ fontSize: '1rem', color: '#1f2937' }}>{review.user?.name || review.reviewerName || 'Anonymous User'}</strong>
-                                            <div style={{ display: 'flex' }}>
-                                                {[1, 2, 3, 4, 5].map((star) => (
-                                                    <Star key={star} size={13} fill={star <= review.rating ? "#facc15" : "none"} color={star <= review.rating ? "#facc15" : "#e5e7eb"} style={{ marginLeft: '2px' }} />
-                                                ))}
+                            <>
+                                <div style={{ display: 'grid', gap: '0.5rem', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+                                    {reviews.slice(0, visibleReviewsCount).map((review) => (
+                                        <div key={review._id} style={{ padding: '0.8rem 1rem', backgroundColor: '#f9fafb', borderRadius: '8px', border: '1px solid #f3f4f6' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                                                <strong style={{ fontSize: '1rem', color: '#1f2937' }}>{review.user?.name || review.reviewerName || 'Anonymous User'}</strong>
+                                                <div style={{ display: 'flex' }}>
+                                                    {[1, 2, 3, 4, 5].map((star) => (
+                                                        <Star key={star} size={13} fill={star <= review.rating ? "#facc15" : "none"} color={star <= review.rating ? "#facc15" : "#e5e7eb"} style={{ marginLeft: '2px' }} />
+                                                    ))}
+                                                </div>
                                             </div>
+                                            <p style={{ fontSize: '0.9rem', lineHeight: '1.4', color: '#4b5563', margin: 0 }}>{review.comment}</p>
                                         </div>
-                                        <p style={{ fontSize: '0.9rem', lineHeight: '1.4', color: '#4b5563', margin: 0 }}>{review.comment}</p>
+                                    ))}
+                                </div>
+                                {reviews.length > visibleReviewsCount && (
+                                    <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+                                        <button 
+                                            onClick={() => setVisibleReviewsCount(prev => prev + 5)}
+                                            style={{ padding: '0.6rem 1.5rem', borderRadius: '25px', border: '1px solid #d1d5db', background: 'white', color: '#374151', cursor: 'pointer', fontWeight: 500, fontSize: '0.9rem', transition: 'all 0.2s', boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}
+                                            onMouseOver={(e) => e.currentTarget.style.background = '#f9fafb'}
+                                            onMouseOut={(e) => e.currentTarget.style.background = 'white'}
+                                        >
+                                            View More Reviews
+                                        </button>
                                     </div>
-                                ))}
-                            </div>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>
@@ -540,7 +557,7 @@ const ProductDetails = () => {
             `}</style>
             </div>
             {}
-            <div className="mobile-only-spacer" style={{ height: '80px', display: 'none' }}></div>
+            <div className="mobile-only-spacer" style={{ height: '30px', display: 'none' }}></div>
             <style>{`@media (max-width: 768px) { .mobile-only-spacer { display: block !important; } }`}</style>
             <Footer />
         </div>
