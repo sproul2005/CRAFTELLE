@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const WishlistContext = createContext();
 
@@ -8,6 +10,8 @@ export const useWishlist = () => {
 
 export const WishlistProvider = ({ children }) => {
     const [wishlistItems, setWishlistItems] = useState([]);
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
     
     useEffect(() => {
@@ -27,13 +31,17 @@ export const WishlistProvider = ({ children }) => {
     }, [wishlistItems]);
 
     const addToWishlist = (product) => {
-        setWishlistItems((prev) => {
-            
-            const exists = prev.find(item => item._id === product._id);
-            if (exists) return prev; 
+        if (!user) {
+            alert("Please login to add items to your wishlist.");
+            navigate('/login');
+            return false;
+        }
 
-            return [...prev, product];
-        });
+        const exists = wishlistItems.find(item => item._id === product._id);
+        if (exists) return false;
+
+        setWishlistItems((prev) => [...prev, product]);
+        return true;
     };
 
     const removeFromWishlist = (productId) => {

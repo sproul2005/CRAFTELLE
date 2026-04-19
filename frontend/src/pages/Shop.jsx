@@ -15,8 +15,10 @@ const Shop = () => {
 
     const handleAddToWishlist = (e, product) => {
         e.preventDefault();
-        addProductToWishlist(product);
-        alert("Added to Wishlist!");
+        const success = addProductToWishlist(product);
+        if (success) {
+            alert("Added to Wishlist!");
+        }
     };
 
     const handleBuyNow = (e, product) => {
