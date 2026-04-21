@@ -14,7 +14,7 @@ import { getOptimizedUrl } from '../utils/imageUtils';
 const ProductDetails = () => {
     const { id } = useParams();
     const { addToCart } = useCart();
-    const { addToWishlist } = useWishlist();
+    const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
     const { user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -86,9 +86,13 @@ const ProductDetails = () => {
     };
 
     const handleAddToWishlist = () => {
-        const success = addToWishlist(product);
-        if (success) {
-            alert("Added to Wishlist!");
+        if (isInWishlist(product._id)) {
+            removeFromWishlist(product._id);
+        } else {
+            const success = addToWishlist(product);
+            if (success) {
+                alert("Added to Wishlist!");
+            }
         }
     };
 
@@ -367,7 +371,7 @@ const ProductDetails = () => {
                                 <Share2 size={20} />
                             </button>
                             <button className="desktop-cart-btn" onClick={handleAddToWishlist} style={{ flex: 1, minWidth: '120px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', backgroundColor: 'white', border: '1px solid #d1d5db', color: '#374151', padding: '0 12px', borderRadius: '4px', fontWeight: 500, cursor: 'pointer' }}>
-                                <Heart size={18} /> Wishlist
+                                <Heart size={18} fill={isInWishlist(product._id) ? "#ef4444" : "none"} color={isInWishlist(product._id) ? "#ef4444" : "currentColor"} /> Wishlist
                             </button>
                             <button className="btn-primary desktop-cart-btn" onClick={handleBuyNow} style={{ flex: 2, minWidth: '180px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', backgroundColor: '#111', color: 'white', border: 'none', padding: '0 12px', borderRadius: '4px', fontWeight: 600, cursor: 'pointer' }}>
                                 <ShoppingBag size={18} /> Buy Now

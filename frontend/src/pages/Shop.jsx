@@ -11,13 +11,17 @@ const Shop = () => {
     const [loading, setLoading] = useState(true);
     const [category, setCategory] = useState('');
     const navigate = useNavigate();
-    const { addToWishlist: addProductToWishlist } = useWishlist();
+    const { addToWishlist: addProductToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
     const handleAddToWishlist = (e, product) => {
         e.preventDefault();
-        const success = addProductToWishlist(product);
-        if (success) {
-            alert("Added to Wishlist!");
+        if (isInWishlist(product._id)) {
+            removeFromWishlist(product._id);
+        } else {
+            const success = addProductToWishlist(product);
+            if (success) {
+                alert("Added to Wishlist!");
+            }
         }
     };
 
@@ -282,7 +286,7 @@ const Shop = () => {
                                             e.currentTarget.style.backgroundColor = 'transparent';
                                         }}
                                     >
-                                        <Heart size={16} /> <span className="wishlist-text">WISHLIST</span>
+                                        <Heart size={16} fill={isInWishlist(product._id) ? "#ef4444" : "none"} color={isInWishlist(product._id) ? "#ef4444" : "currentColor"} /> <span className="wishlist-text">WISHLIST</span>
                                     </button>
                                 </div>
                             </div>
