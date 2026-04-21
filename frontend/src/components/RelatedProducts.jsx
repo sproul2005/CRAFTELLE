@@ -3,12 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { ChevronLeft, ChevronRight, Star, Heart } from 'lucide-react';
 import { getOptimizedUrl } from '../utils/imageUtils';
+import { useWishlist } from '../context/WishlistContext';
 
 const RelatedProducts = ({ currentProductId }) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const scrollRef = React.useRef(null);
     const navigate = useNavigate();
+    const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+
+    const handleWishlistToggle = (e, product) => {
+        e.stopPropagation();
+        if (isInWishlist(product._id)) {
+            removeFromWishlist(product._id);
+        } else {
+            const success = addToWishlist(product);
+            if (success) {
+                alert("Added to Wishlist!");
+            }
+        }
+    };
 
     useEffect(() => {
         const fetchRelatedProducts = async () => {
@@ -115,7 +129,7 @@ const RelatedProducts = ({ currentProductId }) => {
                                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af' }}>No Image</div>
                             )}
                             <button
-                                onClick={(e) => { e.stopPropagation();  }}
+                                onClick={(e) => handleWishlistToggle(e, product)}
                                 style={{
                                     position: 'absolute',
                                     bottom: '10px',
@@ -130,7 +144,7 @@ const RelatedProducts = ({ currentProductId }) => {
                                     filter: 'drop-shadow(0px 1px 3px rgba(0,0,0,0.5))'
                                 }}
                             >
-                                <Heart size={20} color="white" strokeWidth={2.5} style={{ opacity: 0.9 }} />
+                                <Heart size={20} fill={isInWishlist(product._id) ? "#ef4444" : "none"} color={isInWishlist(product._id) ? "#ef4444" : "white"} strokeWidth={2.5} style={{ opacity: 0.9 }} />
                             </button>
                         </div>
                         <div style={{ padding: '1.2rem 1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', flex: 1, justifyContent: 'center' }}>
