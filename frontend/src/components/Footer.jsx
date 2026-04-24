@@ -33,14 +33,14 @@ const Footer = () => {
 
                     {}
                     <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
-                        <a href="https://www.facebook.com/share/1CUjiCsiWD/" target="_blank" rel="noopener noreferrer" style={{ color: '#aaa', transition: 'color 0.2s', padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }}>
+                        <a href="https://www.facebook.com/share/1CUjiCsiWD/" target="_blank" rel="noopener noreferrer" style={{ color: '#aaa', transition: 'color 0.2s', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }}>
                             <Facebook size={20} className="hover:text-white" />
                         </a>
-                        <a href="https://www.instagram.com/flashy___ray?utm_source=qr&igsh=MXV1ZnlxbHpjdHd5OQ==" target="_blank" rel="noopener noreferrer" style={{ color: '#aaa', transition: 'color 0.2s', padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }}>
-                            <Instagram size={20} />
+                        <a href="https://www.instagram.com/flashy___ray?utm_source=qr&igsh=MXV1ZnlxbHpjdHd5OQ==" target="_blank" rel="noopener noreferrer" style={{ color: '#aaa', transition: 'color 0.2s', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }}>
+                            <Instagram size={20} className="hover:text-white" />
                         </a>
-                        <a href="https://youtube.com/@rashmi_artzone?si=m9xHpgTugM-Cr9Wv" target="_blank" rel="noopener noreferrer" style={{ color: '#aaa', transition: 'color 0.2s', padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }}>
-                            <Youtube size={20} />
+                        <a href="https://youtube.com/@rashmi_artzone?si=m9xHpgTugM-Cr9Wv" target="_blank" rel="noopener noreferrer" style={{ color: '#aaa', transition: 'color 0.2s', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }}>
+                            <Youtube size={20} className="hover:text-white" />
                         </a>
                     </div>
                 </div>
