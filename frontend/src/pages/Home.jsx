@@ -473,7 +473,8 @@ const Home = () => {
                                         lineHeight: 1,
                                         marginBottom: 'clamp(-1rem, -2vw, -1.5rem)',
                                         position: 'relative',
-                                        zIndex: 0
+                                        zIndex: 0,
+                                        transform: 'translateY(-15px)'
                                     }}>{step.id}</div>
 
                                     <div className="process-icon-container" style={{
@@ -514,17 +515,22 @@ const Home = () => {
                     id="about-us" className="section" style={{ textAlign: 'center', padding: 'clamp(2rem, 6vw, 4rem) 1rem', borderTop: '1px solid #eee' }}
                 >
                     <h2 style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)', fontFamily: 'var(--font-heading)' }}>Our Story</h2>
-                    <div style={{ maxWidth: '800px', margin: '0 auto', lineHeight: '1.8', fontSize: 'clamp(1rem, 2vw, 1.1rem)', color: '#444' }}>
-                        <p style={{ marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}>
-                            Welcome to <strong>Craftelle</strong>, where the joy of gifting meets contemporary elegance.
-                            Born from a passion for bringing smiles to people's faces, we curate a collection of personalized, soulful gifts that tell a beautiful story.
+                    <div style={{ maxWidth: '800px', margin: '0 auto', lineHeight: '1.8', fontSize: 'clamp(0.9rem, 1.5vw, 1rem)', color: '#444' }}>
+                        <p style={{ marginBottom: 'clamp(1rem, 2vw, 1.2rem)' }}>
+                            Welcome to <strong>Craftelle</strong> — where every gift becomes a feeling, a memory, and a story.
                         </p>
-                        <p style={{ marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}>
-                            Our artisans pour their heart into every creation—from personalized Resin Clocks to delicate String Art and customized Engagement Platters.
-                            We believe that every occasion deserves to be celebrated, and every handcrafted piece should carry a piece of your heart.
+                        <p style={{ marginBottom: 'clamp(1rem, 2vw, 1.2rem)' }}>
+                            What began as a passion for creating smiles has grown into a journey of crafting personalized, meaningful pieces that capture emotions beautifully. From resin art and string art to customized frames, platters, and more, each creation is thoughtfully handcrafted with care and detail.
+                        </p>
+                        <p style={{ marginBottom: 'clamp(1rem, 2vw, 1.2rem)' }}>
+                            We believe the most special gifts are the ones that come from the heart—filled with warmth, love, and authenticity.
+                        </p>
+                        <p style={{ marginBottom: 'clamp(1rem, 2vw, 1.2rem)' }}>
+                            When you choose Craftelle, you’re not just buying a product—<br />
+                            you’re celebrating a memory.
                         </p>
                         <p>
-                            Thank you for supporting handmade. Thank you for choosing quality, authenticity, and love.
+                            Thank you for choosing handmade. 💛
                         </p>
                         <div style={{ marginTop: 'clamp(1.5rem, 4vw, 2rem)', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
                             <span style={{ height: '2px', width: '50px', background: 'var(--color-secondary)' }}></span>
@@ -561,7 +567,7 @@ const Home = () => {
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
                         </div>
                         <h3 style={{ fontSize: '0.9rem', fontWeight: 600, fontFamily: 'var(--font-heading)' }}>Standard Delivery</h3>
-                        <p style={{ fontSize: '0.8rem', color: '#888' }}>7-12 Days Delivery</p>
+                        <p style={{ fontSize: '0.8rem', color: '#888' }}>Reliable shipping within 7-12 days</p>
                     </motion.div>
 
                     { }
@@ -591,7 +597,7 @@ const Home = () => {
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </div>
                         <h3 style={{ fontSize: '0.9rem', fontWeight: 600, fontFamily: 'var(--font-heading)' }}>Secure Payment</h3>
-                        <p style={{ fontSize: '0.8rem', color: '#888' }}>100% Secure Checkout</p>
+                        <p style={{ fontSize: '0.8rem', color: '#888' }}>100% safe and trusted checkout</p>
                     </motion.div>
 
                     { }
@@ -606,7 +612,7 @@ const Home = () => {
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                         </div>
                         <h3 style={{ fontSize: '0.9rem', fontWeight: 600, fontFamily: 'var(--font-heading)' }}>24/7 Support</h3>
-                        <p style={{ fontSize: '0.8rem', color: '#888' }}>We're here to help</p>
+                        <p style={{ fontSize: '0.8rem', color: '#888' }}>Always here when you need us</p>
                     </motion.div>
                 </motion.div>
 

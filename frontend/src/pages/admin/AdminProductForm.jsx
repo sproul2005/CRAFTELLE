@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../services/api';
-import { ChevronLeft, Plus, Trash2 } from 'lucide-react';
+import { ChevronLeft, Plus, Trash2, Upload, X } from 'lucide-react';
 
 const AdminProductForm = () => {
     const categories = ['Anniversary', 'Marriage', 'Birthday', 'Baby Details', 'Gifts', 'Nameplate', 'Clock', 'Bangles', 'Resin Art', 'String Art', 'Candles', 'Rakhi'];
@@ -20,8 +20,9 @@ const AdminProductForm = () => {
         images: [],
     });
     const [sizes, setSizes] = useState([{ label: '8"Inch', price: 0, stock: 0 }]);
-    const [files, setFiles] = useState([]);
-    const [existingImages, setExistingImages] = useState([]);
+    const [imageSlots, setImageSlots] = useState([null, null, null, null, null]);
+    const [activeSlot, setActiveSlot] = useState(null);
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
         if (isEditMode) {
@@ -38,7 +39,13 @@ const AdminProductForm = () => {
                         customizationType: p.customizationType,
                         isTrending: p.isTrending || false,
                     });
-                    setExistingImages(p.images || []);
+                    const initialSlots = [null, null, null, null, null];
+                    if (p.images && p.images.length > 0) {
+                        p.images.forEach((img, idx) => {
+                            if (idx < 5) initialSlots[idx] = { type: 'existing', data: img };
+                        });
+                    }
+                    setImageSlots(initialSlots);
                     if (p.sizes && p.sizes.length > 0) setSizes(p.sizes);
                 } catch (error) {
                     console.error("Failed to fetch", error);
@@ -68,12 +75,30 @@ const AdminProductForm = () => {
         setSizes(sizes.filter((_, i) => i !== index));
     };
 
-    const handleFileChange = (e) => {
-        setFiles(Array.from(e.target.files));
+    const handleSlotClick = (index) => {
+        setActiveSlot(index);
+        fileInputRef.current.click();
     };
 
-    const handleRemoveExistingImage = (public_id) => {
-        setExistingImages(existingImages.filter(img => img.public_id !== public_id));
+    const handleFileSelect = (e) => {
+        const file = e.target.files[0];
+        if (file && activeSlot !== null) {
+            const newSlots = [...imageSlots];
+            newSlots[activeSlot] = {
+                type: 'new',
+                file: file,
+                previewUrl: URL.createObjectURL(file)
+            };
+            setImageSlots(newSlots);
+        }
+        e.target.value = null; // reset input
+    };
+
+    const handleRemoveSlot = (e, index) => {
+        e.stopPropagation();
+        const newSlots = [...imageSlots];
+        newSlots[index] = null;
+        setImageSlots(newSlots);
     };
 
     const handleSubmit = async (e) => {
@@ -89,11 +114,18 @@ const AdminProductForm = () => {
         data.append('isTrending', formData.isTrending);
         data.append('sizes', JSON.stringify(sizes));
 
+        const finalExisting = imageSlots
+            .filter(slot => slot && slot.type === 'existing')
+            .map(slot => slot.data);
+
+        const finalNewFiles = imageSlots
+            .filter(slot => slot && slot.type === 'new')
+            .map(slot => slot.file);
+
         // Append existing images that the user wants to KEEP
-        data.append('existingImages', JSON.stringify(existingImages));
+        data.append('existingImages', JSON.stringify(finalExisting));
 
-
-        files.forEach(file => {
+        finalNewFiles.forEach(file => {
             data.append('images', file);
         });
 
@@ -200,35 +232,63 @@ const AdminProductForm = () => {
 
                 { }
                 <div style={{ marginTop: '2rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Product Images</label>
-                    <input type="file" multiple onChange={handleFileChange} accept="image/*" />
-
-                    {/* Show existing images */}
-                    {isEditMode && existingImages.length > 0 && (
-                        <div style={{ marginTop: '1rem' }}>
-                            <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>Current Images:</p>
-                            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                                {existingImages.map(img => (
-                                    <div key={img.public_id} style={{ position: 'relative' }}>
-                                        <img src={img.url} alt="" referrerPolicy="no-referrer" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '4px', border: '1px solid #ddd' }} />
-                                        <button
-                                            type="button"
-                                            onClick={() => handleRemoveExistingImage(img.public_id)}
-                                            style={{
-                                                position: 'absolute', top: '-5px', right: '-5px',
-                                                background: 'red', color: 'white', border: 'none',
-                                                borderRadius: '50%', width: '20px', height: '20px',
-                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                                cursor: 'pointer', fontSize: '12px'
+                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Product Images (Up to 5)</label>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                        {imageSlots.map((slot, idx) => (
+                            <div key={idx} 
+                                onClick={() => handleSlotClick(idx)}
+                                style={{ 
+                                    width: '120px',
+                                    height: '120px', 
+                                    border: slot ? '1px solid #ddd' : '2px dashed #ccc', 
+                                    borderRadius: '8px',
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    position: 'relative',
+                                    backgroundColor: slot ? 'transparent' : '#f9f9f9',
+                                    transition: 'all 0.2s ease',
+                                    overflow: 'hidden'
+                                }}>
+                                {slot ? (
+                                    <>
+                                        <img 
+                                            src={slot.type === 'existing' ? slot.data.url : slot.previewUrl} 
+                                            alt={`Preview ${idx + 1}`} 
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                            referrerPolicy="no-referrer"
+                                        />
+                                        <button 
+                                            type="button" 
+                                            onClick={(e) => handleRemoveSlot(e, idx)} 
+                                            style={{ 
+                                                position: 'absolute', top: '5px', right: '5px', 
+                                                background: 'red', color: 'white', border: 'none', 
+                                                borderRadius: '50%', width: '22px', height: '22px', 
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                                                cursor: 'pointer' 
                                             }}
                                         >
-                                            ✕
+                                            <X size={14} />
                                         </button>
+                                    </>
+                                ) : (
+                                    <div style={{ textAlign: 'center', color: '#888' }}>
+                                        <Upload size={24} style={{ margin: '0 auto 5px' }} />
+                                        <div style={{ fontSize: '0.8rem' }}>Image {idx + 1}</div>
                                     </div>
-                                ))}
+                                )}
                             </div>
-                        </div>
-                    )}
+                        ))}
+                    </div>
+                    <input 
+                        type="file" 
+                        ref={fileInputRef} 
+                        onChange={handleFileSelect} 
+                        accept="image/*" 
+                        style={{ display: 'none' }} 
+                    />
                 </div>
 
                 <button type="submit" className="btn-primary" style={{ marginTop: '2rem', width: '100%' }} disabled={loading}>
