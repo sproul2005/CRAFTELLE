@@ -51,7 +51,7 @@ const Footer = () => {
                     <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                         <li><a href="/" style={{ color: '#aaa', fontSize: '0.95rem', transition: 'color 0.2s' }}>Home</a></li>
                         <li><a href="/#about-us" style={{ color: '#aaa', fontSize: '0.95rem', transition: 'color 0.2s' }}>About Us</a></li>
-                        <li><a href="/shop" style={{ color: '#aaa', fontSize: '0.95rem', transition: 'color 0.2s' }}>Collection</a></li>
+                        <li><a href="/shop" style={{ color: '#aaa', fontSize: '0.95rem', transition: 'color 0.2s' }}>Collections</a></li>
                         <li><a href="/login" style={{ color: '#aaa', fontSize: '0.95rem', transition: 'color 0.2s' }}>My Account</a></li>
                     </ul>
                 </div>

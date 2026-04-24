@@ -40,6 +40,9 @@ const Checkout = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         if (!product && !draftId) {
             navigate('/shop');
             return;

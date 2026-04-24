@@ -66,6 +66,11 @@ const Navbar = () => {
         
     }
 
+    const getIsActive = (path) => {
+        if (path === '/') return location.pathname === '/' && (!location.hash || location.hash === '');
+        if (path.includes('#')) return location.pathname + location.hash === path;
+        return location.pathname === path;
+    };
 
 
     return (
@@ -80,7 +85,7 @@ const Navbar = () => {
         }}>
             <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 {}
-                <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+                <Link to="/" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
                     {}
                     {}
                     <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.5px', color: '#333' }}>
@@ -102,7 +107,7 @@ const Navbar = () => {
                         <Search size={18} color="#6b7280" />
                         <input
                             type="text"
-                            placeholder="Search products..."
+                            placeholder="Search handcrafted treasures."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             onFocus={() => setIsSearchFocused(true)}
@@ -189,9 +194,12 @@ const Navbar = () => {
                         <Link
                             key={link.name}
                             to={link.path}
+                            onClick={() => {
+                                if (link.path === '/') window.scrollTo({top: 0, behavior: 'smooth'});
+                            }}
                             style={{
-                                color: location.pathname === link.path && link.path !== '#' ? 'var(--color-primary)' : '#555',
-                                fontWeight: location.pathname === link.path && link.path !== '#' ? 600 : 400,
+                                color: getIsActive(link.path) ? 'var(--color-primary)' : '#555',
+                                fontWeight: getIsActive(link.path) ? 'bold' : 'normal',
                                 fontSize: '0.95rem',
                                 transition: 'color 0.2s',
                                 textDecoration: 'none'
@@ -251,7 +259,7 @@ const Navbar = () => {
                             )}
                         </div>
                     ) : (
-                        <Link to="/login" style={{ fontSize: '0.95rem', color: '#555', textDecoration: 'none' }}>
+                        <Link to="/login" style={{ fontSize: '0.95rem', color: getIsActive('/login') ? 'var(--color-primary)' : '#555', fontWeight: getIsActive('/login') ? 'bold' : 'normal', textDecoration: 'none' }}>
                             Login
                         </Link>
                     )}
@@ -322,7 +330,7 @@ const Navbar = () => {
                                 <Search size={18} color="#6b7280" />
                                 <input
                                     type="text"
-                                    placeholder="Search products..."
+                                    placeholder="Search handcrafted treasures."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     autoFocus
@@ -398,10 +406,14 @@ const Navbar = () => {
                                 <Link
                                     key={link.name}
                                     to={link.path}
-                                    onClick={toggleMenu}
+                                    onClick={() => {
+                                        if (link.path === '/') window.scrollTo({top: 0, behavior: 'smooth'});
+                                        toggleMenu();
+                                    }}
                                     style={{
                                         fontSize: '1rem',
-                                        color: '#333',
+                                        color: getIsActive(link.path) ? 'var(--color-primary)' : '#333',
+                                        fontWeight: getIsActive(link.path) ? 'bold' : 'normal',
                                         textDecoration: 'none'
                                     }}
                                 >
@@ -434,7 +446,7 @@ const Navbar = () => {
                                     </button>
                                 </>
                             ) : (
-                                <Link to="/login" onClick={toggleMenu} style={{ fontSize: '1rem', color: '#333', textDecoration: 'none' }}>
+                                <Link to="/login" onClick={toggleMenu} style={{ fontSize: '1rem', color: getIsActive('/login') ? 'var(--color-primary)' : '#333', fontWeight: getIsActive('/login') ? 'bold' : 'normal', textDecoration: 'none' }}>
                                     Login
                                 </Link>
                             )}
