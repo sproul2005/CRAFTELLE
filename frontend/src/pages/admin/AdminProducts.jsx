@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { Edit, Trash2, Plus } from 'lucide-react';
 import { getOptimizedUrl } from '../../utils/imageUtils';
+import { useNotification } from '../../context/NotificationContext';
 
 const AdminProducts = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { showNotification } = useNotification();
 
     const fetchProducts = async () => {
         try {
@@ -28,8 +30,9 @@ const AdminProducts = () => {
         try {
             await api.delete(`/products/${id}`);
             setProducts(products.filter(p => p._id !== id));
+            showNotification("Product deleted successfully", "success");
         } catch (error) {
-            alert("Failed to delete product");
+            showNotification("Failed to delete product", "error");
         }
     };
 

@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../services/api';
 import { ChevronLeft, Plus, Trash2, Upload, X } from 'lucide-react';
+import { useNotification } from '../../context/NotificationContext';
 
 const AdminProductForm = () => {
     const categories = ['Anniversary', 'Marriage', 'Birthday', 'Baby Details', 'Gifts', 'Nameplate', 'Clock', 'Bangles', 'Resin Art', 'String Art', 'Candles', 'Rakhi'];
     const { id } = useParams();
     const navigate = useNavigate();
     const isEditMode = !!id;
+    const { showNotification } = useNotification();
 
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -140,12 +142,13 @@ const AdminProductForm = () => {
                 });
             }
             navigate('/admin/products');
+            showNotification(`Product ${isEditMode ? 'updated' : 'created'} successfully`, "success");
         } catch (error) {
             console.error(error);
             const msg = error.response && error.response.data && error.response.data.error
                 ? error.response.data.error
                 : "Operation failed";
-            alert(`Error: ${msg}`);
+            showNotification(`Error: ${msg}`, "error");
         } finally {
             setLoading(false);
         }

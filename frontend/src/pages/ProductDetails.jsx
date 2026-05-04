@@ -10,6 +10,7 @@ import { useWishlist } from '../context/WishlistContext';
 import RelatedProducts from '../components/RelatedProducts';
 import Footer from '../components/Footer';
 import { getOptimizedUrl } from '../utils/imageUtils';
+import { useNotification } from '../context/NotificationContext';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -18,6 +19,7 @@ const ProductDetails = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const { showNotification } = useNotification();
 
     const [product, setProduct] = useState(null);
     const [reviews, setReviews] = useState([]);
@@ -91,18 +93,18 @@ const ProductDetails = () => {
         } else {
             const success = addToWishlist(product);
             if (success) {
-                alert("Added to Wishlist!");
+                showNotification("Added to Wishlist!", "success");
             }
         }
     };
 
     const handleBuyNow = () => {
         if (!user) {
-            alert("Please log in to place an order.");
+            showNotification("Please log in to place an order.", "warning");
             navigate('/login');
             return;
         }
-        if (!selectedSize) return alert('Please select a size');
+        if (!selectedSize) return showNotification('Please select a size', 'warning');
 
         navigate('/checkout', {
             state: { product, selectedSize, quantity }
@@ -123,14 +125,14 @@ const ProductDetails = () => {
         } else {
             
             navigator.clipboard.writeText(window.location.href);
-            alert("Product link copied to clipboard!");
+            showNotification("Product link copied to clipboard!", "success");
         }
     };
 
     const submitReview = async (e) => {
         e.preventDefault();
         if (!user) {
-            alert("Please log in to submit a review.");
+            showNotification("Please log in to submit a review.", "warning");
             navigate('/login');
             return;
         }
@@ -138,13 +140,13 @@ const ProductDetails = () => {
         setIsSubmittingReview(true);
         try {
             await api.post(`/products/${id}/reviews`, { rating, comment });
-            alert("Review submitted successfully!");
+            showNotification("Review submitted successfully!", "success");
             setComment('');
             setRating(5);
             setIsReviewModalOpen(false);
             fetchProductAndReviews(); // Refresh to show new review
         } catch (error) {
-            alert(error.response?.data?.error || "Failed to submit review. You may have already reviewed this product.");
+            showNotification(error.response?.data?.error || "Failed to submit review. You may have already reviewed this product.", "error");
         } finally {
             setIsSubmittingReview(false);
         }
@@ -387,7 +389,7 @@ const ProductDetails = () => {
                         <button
                             onClick={() => {
                                 if (!user) {
-                                    alert("Please log in to submit a review.");
+                                    showNotification("Please log in to submit a review.", "warning");
                                     navigate('/login');
                                     return;
                                 }

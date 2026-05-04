@@ -4,10 +4,12 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { User, Lock, Package, Star } from 'lucide-react';
 import { getOptimizedUrl } from '../utils/imageUtils';
+import { useNotification } from '../context/NotificationContext';
 
 const Profile = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const { showNotification } = useNotification();
 
     const [activeTab, setActiveTab] = useState('orders'); 
 
@@ -58,11 +60,11 @@ const Profile = () => {
         setIsUpdatingProfile(true);
         try {
             await api.put('/auth/updatedetails', { name, email });
-            alert("Profile updated successfully! Please log in again to see changes.");
+            showNotification("Profile updated successfully! Please log in again to see changes.", "success");
             
             
         } catch (error) {
-            alert(error.response?.data?.error || "Failed to update profile");
+            showNotification(error.response?.data?.error || "Failed to update profile", "error");
         } finally {
             setIsUpdatingProfile(false);
         }
@@ -73,11 +75,11 @@ const Profile = () => {
         setIsUpdatingPassword(true);
         try {
             await api.put('/auth/updatepassword', { currentPassword, newPassword });
-            alert("Password updated successfully!");
+            showNotification("Password updated successfully!", "success");
             setCurrentPassword('');
             setNewPassword('');
         } catch (error) {
-            alert(error.response?.data?.error || "Failed to update password");
+            showNotification(error.response?.data?.error || "Failed to update password", "error");
         } finally {
             setIsUpdatingPassword(false);
         }
