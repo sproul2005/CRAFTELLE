@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Filter, Search, Heart, Star } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { getOptimizedUrl } from '../utils/imageUtils';
+import { useNotification } from '../context/NotificationContext';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
@@ -12,6 +13,7 @@ const Shop = () => {
     const [category, setCategory] = useState('');
     const navigate = useNavigate();
     const { addToWishlist: addProductToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+    const { showNotification } = useNotification();
 
     const handleAddToWishlist = (e, product) => {
         e.preventDefault();
@@ -20,7 +22,7 @@ const Shop = () => {
         } else {
             const success = addProductToWishlist(product);
             if (success) {
-                alert("Added to Wishlist!");
+                showNotification("Added to Wishlist!", "success");
             }
         }
     };

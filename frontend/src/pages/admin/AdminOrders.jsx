@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { Eye, CheckCircle, XCircle } from 'lucide-react';
 import { getOptimizedUrl } from '../../utils/imageUtils';
+import { useNotification } from '../../context/NotificationContext';
 
 const AdminOrders = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { showNotification } = useNotification();
 
     const fetchOrders = async () => {
         try {
@@ -26,10 +28,10 @@ const AdminOrders = () => {
         try {
             await api.put(`/orders/admin/order/${id}`, { status });
             fetchOrders(); 
-            alert("Order status updated");
+            showNotification("Order status updated", "success");
         } catch (error) {
             console.error("Update failed", error);
-            alert("Failed to update status");
+            showNotification("Failed to update status", "error");
         }
     };
 
@@ -53,7 +55,7 @@ const AdminOrders = () => {
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error('Download failed', error);
-            alert('Failed to download image directly. It might open in a new tab instead.');
+            showNotification('Failed to download image directly. It might open in a new tab instead.', "warning");
             window.open(imgUrl, '_blank');
         }
     };

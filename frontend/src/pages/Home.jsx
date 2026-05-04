@@ -8,6 +8,7 @@ import api from '../services/api';
 import { MessageCircle, Sparkles, X, ChevronDown, Package, Settings, PenTool, CheckCircle, Heart, Star } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getOptimizedUrl } from '../utils/imageUtils';
+import { useNotification } from '../context/NotificationContext';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -22,6 +23,7 @@ const Home = () => {
     const { addToWishlist: addProductToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
     const { isAdmin } = useAuth();
     const navigate = useNavigate();
+    const { showNotification } = useNotification();
 
     // Sync URL category changes
     useEffect(() => {
@@ -48,7 +50,7 @@ const Home = () => {
         } else {
             const success = addProductToWishlist(product);
             if (success) {
-                alert("Added to Wishlist!");
+                showNotification("Added to Wishlist!", "success");
             }
         }
     };

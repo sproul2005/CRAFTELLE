@@ -4,6 +4,7 @@ import api from '../services/api';
 import { ChevronLeft, ChevronRight, Star, Heart } from 'lucide-react';
 import { getOptimizedUrl } from '../utils/imageUtils';
 import { useWishlist } from '../context/WishlistContext';
+import { useNotification } from '../context/NotificationContext';
 
 const RelatedProducts = ({ currentProductId }) => {
     const [products, setProducts] = useState([]);
@@ -11,15 +12,17 @@ const RelatedProducts = ({ currentProductId }) => {
     const scrollRef = React.useRef(null);
     const navigate = useNavigate();
     const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+    const { showNotification } = useNotification();
 
     const handleWishlistToggle = (e, product) => {
         e.stopPropagation();
         if (isInWishlist(product._id)) {
             removeFromWishlist(product._id);
+            showNotification("Removed from Wishlist!", "info");
         } else {
             const success = addToWishlist(product);
             if (success) {
-                alert("Added to Wishlist!");
+                showNotification("Added to Wishlist!", "success");
             }
         }
     };

@@ -6,12 +6,28 @@ import api from '../services/api';
 import { ShoppingBag, Truck, Camera, CreditCard, ChevronLeft, Upload, X, ShieldCheck, RefreshCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getOptimizedUrl } from '../utils/imageUtils';
+import { useNotification } from '../context/NotificationContext';
+
+const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+        if (window.Razorpay) {
+            resolve(true);
+            return;
+        }
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.onload = () => resolve(true);
+        script.onerror = () => resolve(false);
+        document.body.appendChild(script);
+    });
+};
 
 const Checkout = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { user } = useAuth();
     const { saveDraft, cartItems, removeDraft } = useCart();
+    const { showNotification } = useNotification();
 
     const { product, selectedSize, quantity, draftId } = location.state || {};
 
@@ -113,7 +129,7 @@ const Checkout = () => {
     const handleImageUpload = (e) => {
         const files = Array.from(e.target.files);
         if (customImages.length + files.length > 5) {
-            alert("You can only upload a maximum of 5 images.");
+            showNotification("You can only upload a maximum of 5 images.", "warning");
             return;
         }
         setCustomImages([...customImages, ...files]);
@@ -127,7 +143,7 @@ const Checkout = () => {
         if (currentStep === 2) {
             const { fullName, address, city, state, pincode, phone } = shippingAddress;
             if (!fullName || !address || !city || !state || !pincode || !phone) {
-                alert("Please fill in all delivery details.");
+                showNotification("Please fill in all delivery details.", "warning");
                 return;
             }
         }
@@ -139,11 +155,11 @@ const Checkout = () => {
         
         if (currentStep === 3 && activeProduct.customizationType !== 'none') {
             if ((activeProduct.customizationType === 'text' || activeProduct.customizationType === 'both') && !customText.trim()) {
-                alert("Please provide the custom text/name required for this product.");
+                showNotification("Please provide the custom text/name required for this product.", "warning");
                 return;
             }
             if ((activeProduct.customizationType === 'photo' || activeProduct.customizationType === 'both') && customImages.length === 0) {
-                alert("Please upload at least one photo for customization.");
+                showNotification("Please upload at least one photo for customization.", "warning");
                 return;
             }
         }
@@ -154,6 +170,13 @@ const Checkout = () => {
 
     const handlePlaceOrder = async () => {
         setLoading(true);
+
+        const isRazorpayLoaded = await loadRazorpayScript();
+        if (!isRazorpayLoaded) {
+            showNotification("Payment gateway blocked. Please disable your ad-blocker or check your internet connection.", "error");
+            setLoading(false);
+            return;
+        }
 
         try {
             let uploadedImageUrls = [];
@@ -211,7 +234,8 @@ const Checkout = () => {
                 rpOrderResponse = res.data;
             } catch (err) {
                 console.error('Razorpay creation failed:', err);
-                alert('Payment gateway unreachable. Please try again later.');
+                const backendError = err.response?.data?.error || err.message || 'Payment gateway unreachable. Please try again later.';
+                showNotification(`Checkout Failed: ${backendError}`, "error");
                 return;
             }
 
@@ -236,12 +260,12 @@ const Checkout = () => {
                         };
                         const { data: verifyResponse } = await api.post('/payment/verify', verifyData);
                         if (verifyResponse.success) {
-                            alert('Payment successful!');
+                            showNotification('Payment successful!', "success");
                             removeDraft(currentDraftId);
                             navigate('/my-orders');
                         }
                     } catch (err) {
-                        alert("Payment verification or order creation failed! If deducted, contact support. Your draft is saved.");
+                        showNotification("Payment verification or order creation failed! If deducted, contact support. Your draft is saved.", "error");
                         navigate(`/product/${activeProduct._id}`);
                     }
                 },
@@ -253,7 +277,7 @@ const Checkout = () => {
                 theme: { color: "#111111" },
                 modal: {
                     ondismiss: function() {
-                        alert("Payment was cancelled. Your progress has been saved in your cart.");
+                        showNotification("Payment was cancelled. Your progress has been saved in your cart.", "info");
                         navigate(`/product/${activeProduct._id}`);
                     }
                 }
@@ -261,14 +285,14 @@ const Checkout = () => {
 
             const rzp = new window.Razorpay(options);
             rzp.on('payment.failed', function (response) {
-                alert(`Payment Failed: ${response.error.description}. Your progress has been saved.`);
+                showNotification(`Payment Failed: ${response.error.description}. Your progress has been saved.`, "error");
                 navigate(`/product/${activeProduct._id}`);
             });
             rzp.open();
 
         } catch (error) {
             console.error('Checkout error:', error);
-            alert(`Checkout failed. Please try again.`);
+            showNotification(`Checkout failed. Please try again.`, "error");
         } finally {
             setLoading(false);
         }

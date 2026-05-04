@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from './NotificationContext';
 
 const WishlistContext = createContext();
 
@@ -12,6 +13,7 @@ export const WishlistProvider = ({ children }) => {
     const [wishlistItems, setWishlistItems] = useState([]);
     const { user } = useAuth();
     const navigate = useNavigate();
+    const { showNotification } = useNotification();
 
     
     useEffect(() => {
@@ -32,7 +34,7 @@ export const WishlistProvider = ({ children }) => {
 
     const addToWishlist = (product) => {
         if (!user) {
-            alert("Please login to add items to your wishlist.");
+            showNotification("Please login to add items to your wishlist.", "warning");
             navigate('/login');
             return false;
         }

@@ -21,6 +21,7 @@ const AdminOrders = lazy(() => import('./pages/admin/AdminOrders'));
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
+import { NotificationProvider } from './context/NotificationContext';
 import Navbar from './components/Navbar';
 
 import Footer from './components/Footer';
@@ -32,43 +33,45 @@ function App() {
   const isAdminPage = location.pathname.startsWith('/admin');
 
   return (
-    <AuthProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <Navbar />
-            <div style={{ flex: 1 }}>
-              <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', padding: '50px' }}>Loading...</div>}>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/shop" element={<Shop />} />
-                  <Route path="/product/:id" element={<ProductDetails />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/wishlist" element={<Wishlist />} />
-                  <Route path="/checkout" element={<Checkout />} />
-                  <Route path="/my-orders" element={<MyOrders />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="*" element={<h1 className="section container">404: Page Not Found</h1>} />
+    <NotificationProvider>
+      <AuthProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+              <Navbar />
+              <div style={{ flex: 1 }}>
+                <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', padding: '50px' }}>Loading...</div>}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/shop" element={<Shop />} />
+                    <Route path="/product/:id" element={<ProductDetails />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/wishlist" element={<Wishlist />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/my-orders" element={<MyOrders />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="*" element={<h1 className="section container">404: Page Not Found</h1>} />
 
-                  {}
-                  <Route path="/admin" element={<AdminLayout />}>
-                    <Route path="dashboard" element={<AdminDashboard />} />
-                    <Route path="products" element={<AdminProducts />} />
-                    <Route path="product/new" element={<AdminProductForm />} />
-                    <Route path="product/:id" element={<AdminProductForm />} />
-                    <Route path="orders" element={<AdminOrders />} />
-                  </Route>
-                </Routes>
-              </Suspense>
+                    {}
+                    <Route path="/admin" element={<AdminLayout />}>
+                      <Route path="dashboard" element={<AdminDashboard />} />
+                      <Route path="products" element={<AdminProducts />} />
+                      <Route path="product/new" element={<AdminProductForm />} />
+                      <Route path="product/:id" element={<AdminProductForm />} />
+                      <Route path="orders" element={<AdminOrders />} />
+                    </Route>
+                  </Routes>
+                </Suspense>
+              </div>
+              {showFooter && <Footer />}
+              {!isAdminPage && <FloatingWhatsApp />}
             </div>
-            {showFooter && <Footer />}
-            {!isAdminPage && <FloatingWhatsApp />}
-          </div>
-        </WishlistProvider>
-      </CartProvider>
-    </AuthProvider>
+          </WishlistProvider>
+        </CartProvider>
+      </AuthProvider>
+    </NotificationProvider>
   );
 }
 
